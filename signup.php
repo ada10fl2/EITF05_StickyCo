@@ -1,12 +1,15 @@
 <?php
 	$user = isset($_POST['username']) ? $_POST['username'] : "";
 	$pass = isset($_POST['password']) ? $_POST['password'] : "";
-	if(!empty($user) && !empty($pass)) {
-		
+	$address = isset($_POST['address']) ? $_POST['address'] : "";
+	$first = isset($_POST['firstname']) ? $_POST['firstname'] : "";
+	$last = isset($_POST['lastname']) ? $_POST['lastname'] : "";
+	
+	if(!empty($user) && !empty($pass) && !empty($address) && !empty($first) && !empty($last)) {
 		require_once('/classes/db.php');
 		$db = new db();
-		
-		if($db->verify_user($user, $pass) === TRUE){
+		$res = $db->create_user($user, $pass, $firstname, $lastname, $address);
+		if($res === TRUE) {
 			$_SESSION['user'] = $user;
 			$_SESSION['last_logon'] = date('y-M-d');
 			?>
@@ -15,11 +18,12 @@
 			</script>
 			<?php
 		} else {
-			exit("invalid credentials");
+			exit("Creation failed");
 		}
+	} else {
 	}
 	$script = "";
-	$scriptfile = "/login.js";
+	$scriptfile = "/signup.js";
 	$title = "EITF05 Webshop";
 	include $_SERVER["DOCUMENT_ROOT"]."/include/header.php";
 ?>
@@ -30,9 +34,19 @@
 		</p>
 		<div class="jumbotron">
 			<div class="login-form well">
-				<h2>Login</h2>
+				<h2>Sign Up</h2>
 				<form action="" method="POST">
 					<fieldset>
+						<label for="firstname">Firstname</label>
+						<div class="clearfix">
+							<input type="text" name="firstname" id="firstname">
+						</div>
+						
+						<label for="lastname">Lastname</label>
+						<div class="clearfix">
+							<input type="text" name="lastname" id="lastname">
+						</div>
+						
 						<label for="username">Username</label>
 						<div class="clearfix">
 							<input type="text" name="username" id="username">
@@ -42,9 +56,15 @@
 						<div class="clearfix">
 							<input type="password" name="password" id="password">
 						</div>
+						
+						<label for="address">Home Address</label>
+						<div class="clearfix">
+							<input type="text" name="address" id="address">
+						</div>
 						<br/>
-						<button class="btn btn-default btn-lg" type="submit">Log in</button><br/><br/>
-						Not registered yet? <a href="signup.php">Sign up here</a>
+						<button class="btn btn-default btn-lg" type="submit">Register</button>
+						<br/>
+						<br/>
 					</fieldset>
 				</form>
 			</div>
