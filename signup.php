@@ -8,7 +8,7 @@
 	if(!empty($user) && !empty($pass) && !empty($address) && !empty($first) && !empty($last)) {
 		require_once('/classes/db.php');
 		$db = new db();
-		$res = $db->create_user($user, $pass, $firstname, $lastname, $address);
+		$res = $db->create_user($user, $pass, $first, $last, $address);
 		if($res === TRUE) {
 			$_SESSION['user'] = $user;
 			$_SESSION['last_logon'] = date('y-M-d');
