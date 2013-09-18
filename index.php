@@ -29,9 +29,11 @@
 		<div class="well sidebar-nav">
 			<ul class="nav">
 				<li>Shopingcart</li>
-				<li><a>1x Product 1</a></li>
-				<li><a>2x Product 2</a></li>
-				<li><b><a>Sum: 0 SEK</a></b></li>
+				<li><a href="#product0">1x Product 1</a></li>
+				<li><a href="#product1">2x Product 2</a></li>
+			</ul>
+			<ul class="nav">
+				<li><b>Sum: 0 SEK</b></li>
 			</ul>
 		</div><!--/.well -->
 	</div><!--/span-->
