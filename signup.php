@@ -21,7 +21,7 @@
 	} else {
 	}
 	$script = "";
-	$scriptfile = "/signup.js";
+	$scriptfile = "/signup.js?v=1";
 	include $_SERVER["DOCUMENT_ROOT"]."/include/header.php";
 ?>
 <div class="row row-offcanvas row-offcanvas-right">
@@ -30,42 +30,44 @@
 			<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
 		</p>
 		<div class="jumbotron">
-			<div class="login-form well">
-				<h2>Sign Up</h2>
-				<form action="" method="POST">
-					<fieldset>
-						<label for="firstname">Firstname</label>
-						<div class="clearfix">
-							<input type="text" name="firstname" id="firstname">
-						</div>
-						
-						<label for="lastname">Lastname</label>
-						<div class="clearfix">
-							<input type="text" name="lastname" id="lastname">
-						</div>
-						
-						<label for="username">Username</label>
-						<div class="clearfix">
-							<input type="text" name="username" id="username">
-						</div>
-						
-						<label for="password">Password</label>
-						<div class="clearfix">
-							<input type="password" name="password" id="password">
-						</div>
-						
-						<label for="address">Home Address</label>
-						<div class="clearfix">
-							<input type="text" name="address" id="address">
-						</div>
-						<br/>
-						<button class="btn btn-default btn-lg" type="submit">Register</button>
-						<br/>
-						<br/>
-					</fieldset>
+			<h1>Sign Up</h1>
+			<p>
+				Please fill in your information
+			</p>
+		
+		</div>
+		<div class="well">	
+				<form action="" method="POST" role="form" id="signup">
+					<div class="form-group">
+						<label class="control-label" for="firstname">Firstname</label>
+						<input class="form-control" type="text" name="firstname" id="firstname">
+						<span class="help-block">The very first part of your full name</span>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="lastname">Lastname</label>
+						<input class="form-control" type="text" name="lastname" id="lastname">
+						<span class="help-block">The last part of your full name</span>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="username">Username</label>
+						<input class="form-control" type="text" name="username" id="username">
+						<span class="help-block">The desired username</span>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="password">Password</label>
+						<input class="form-control" type="password" name="password" id="password">
+						<span class="help-block">The desired password</span>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="address">Home Address</label>
+						<input class="form-control" type="text" name="address" id="address">	
+					</div>
+					<span class="help-block">Your home address</span>
+					
+					<button class="btn btn-default btn-lg" type="submit">Register</button>
 				</form>
 			</div>
-		</div>
+		
 	</div><!--/span-->
 </div><!--/row-->
 
