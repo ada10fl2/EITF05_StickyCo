@@ -3,17 +3,17 @@ $(document).ready(function() {
 	var tmp = [
 		{
 			id: 0,
-			title: "Products 1",
+			title: "Product 1",
 			description: "Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui."
 		},
 		{
 			id: 1,
-			title: "Products 2",
+			title: "Product 2",
 			description: "Elit non mi porta imon gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui."
 		},
 		{
 			id: 2,
-			title: "Products 3",
+			title: "Product 3",
 			description: "Non mi porta imon gravida at eget init metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui."
 		}	
 	];
