@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 	<head>
-		<title><?= (trim($title) == false) ? "Default Title" : $title ?></title>
+		<title><?= (!isset($title) || trim($title) == false) ? "StickyCo" : $title ?></title>
 		<meta charset="utf-8">
 		<meta name="author" content="ada10fl2,ada10jbe" />
 		<meta name="description" content="Webshop" />
@@ -11,7 +11,6 @@
 		<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
 		
-		<link href="/css/bootstrap-theme.min.css" rel="stylesheet">
 		<link href="/css/bootstrap-lightbox.min.css" rel="stylesheet">
 		<link href="/css/styles.css" rel="stylesheet">
 		
@@ -26,7 +25,15 @@
 				echo "<script src='$scriptfile'></script>";
 			}
 		?>
-		<script><?= $script ?></script>
+		<script>
+			
+			$(document).ready(function(){
+				var parts = document.URL.split("/");
+				var firstFolder = parts[3];
+				$(".nav a[href='/" + firstFolder + "']").parent().attr("class", "active");
+			});
+			<?= $script ?>
+		</script>
 	</head>
 
 	<body>
@@ -42,33 +49,34 @@
 			</div>
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active">
-						<a href="#">Products</a>
+					<li>
+						<a href="/index.php">Products</a>
 					</li>
 					<li>
-						<a href="#about">About</a>
+						<a href="/about.php">About</a>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav pull-right">
-					
-						
-						<?php
-							if(isset($_SESSION['user'])){
-								?>
-								<li class="disabled">
-								<a href="#"><b>
+					<?php
+						if(isset($_SESSION['user'])){
+							?>
+							<li class="disabled">
+							<a href="#">
 								<span class="glyphicon glyphicon-user"></span>
-								<?php
-								echo $_SESSION['user'];
-							} else { 
-								?>
-								<li>
-								<a href="login.php"><b>
-									<span class="glyphicon glyphicon-home"></span> Log in
-								<?php
-							}
-						?>
-						</b></a></li>
+							</a>
+							</li>
+							<?php
+							echo "<b>".$_SESSION['user']."</b>";
+						} else { 
+							?>
+							<li>
+							<a href="/login.php">
+								<b><span class="glyphicon glyphicon-home"></span> Log in</b>
+							</a>
+							</li>
+							<?php
+						}
+					?>
 				</ul>
 			</div><!-- /.nav-collapse -->
 		</div><!-- /.container -->

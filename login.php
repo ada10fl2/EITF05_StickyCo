@@ -1,4 +1,6 @@
 <?php
+	$script = "";
+	
 	$user = isset($_POST['username']) ? $_POST['username'] : "";
 	$pass = isset($_POST['password']) ? $_POST['password'] : "";
 	if(!empty($user) && !empty($pass)) {
@@ -7,20 +9,16 @@
 		$db = new db();
 		
 		if($db->verify_user($user, $pass) === TRUE){
-			$_SESSION['user'] = $user;
-			$_SESSION['last_logon'] = date('y-M-d');
 			?>
 			<script>
 				document.location = "index.php";
 			</script>
 			<?php
 		} else {
-			exit("invalid credentials");
+			$script = "var failed = true;";
 		}
 	}
-	$script = "";
 	$scriptfile = "/login.js";
-	$title = "EITF05 Webshop";
 	include $_SERVER["DOCUMENT_ROOT"]."/include/header.php";
 ?>
 <div class="row row-offcanvas row-offcanvas-right">

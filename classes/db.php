@@ -27,18 +27,27 @@ class db {
 		$stmt = $this->conn->prepare('SELECT * FROM users WHERE Username=:user');
 		$stmt->bindParam(":user", $user);
 		$stmt->execute();
-		$real = $stmt->fetch(PDO::FETCH_ASSOC);
-		$salt = $real['salt'];
 		
-		$cipher = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_CBC,'');
-		mcrypt_generic_init($cipher, CODE_SALT, IV);
-		$crsalt = mdecrypt_generic($cipher, "$pass$salt");
-		
-		$hash = hash('sha512', $crsalt);
-		if($hash === $real['pass']) {
-			return TRUE;
-		} else {
+		if($stmt->rowCount() === 0){
 			return FALSE;
+		} else {
+			$real = $stmt->fetch(PDO::FETCH_ASSOC);
+			$salt = $real['Salt'];
+			
+			$cipher = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_CBC,'');
+			mcrypt_generic_init($cipher, CODE_SALT, IV);
+			$crsalt = mdecrypt_generic($cipher, "$pass$salt");
+			
+			$hash = hash('sha512', $crsalt);
+			if($hash === $real['Password']) {
+				//SUCCESS
+				$_SESSION['user'] = $user;
+				$_SESSION['last_logon'] = date('y-M-d');
+			
+				return TRUE;
+			} else {
+				return FALSE;
+			}
 		}
 	}
 	
@@ -62,7 +71,11 @@ class db {
 		
 		$stmt->bindParam(":pass", $hash);
 		$stmt->execute();
-		$stmt->fetch();
+		//$stmt->fetch();
+		
+		$_SESSION['user'] = $user;
+		$_SESSION['last_logon'] = date('y-M-d');
+		
 		return TRUE;
 	}
 }

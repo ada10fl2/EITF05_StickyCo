@@ -10,8 +10,6 @@
 		$db = new db();
 		$res = $db->create_user($user, $pass, $first, $last, $address);
 		if($res === TRUE) {
-			$_SESSION['user'] = $user;
-			$_SESSION['last_logon'] = date('y-M-d');
 			?>
 			<script>
 				document.location = "index.php";
@@ -24,7 +22,6 @@
 	}
 	$script = "";
 	$scriptfile = "/signup.js";
-	$title = "EITF05 Webshop";
 	include $_SERVER["DOCUMENT_ROOT"]."/include/header.php";
 ?>
 <div class="row row-offcanvas row-offcanvas-right">
