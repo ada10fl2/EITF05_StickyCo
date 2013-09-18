@@ -2,9 +2,12 @@
 	$user = isset($_POST['username']) ? $_POST['username'] : "";
 	$pass = isset($_POST['password']) ? $_POST['password'] : "";
 	if(isset($user) && isset($pass)) {
-		$default_user="test";
-		$default_pass="katt";
-		if($default_user === $user && $default_pass === $pass){
+		
+		require_once('/classes/db.php');
+		$db = new db();
+		
+		
+		if($db->verify_user($user, $pass) === TRUE){
 			$_SESSION['user'] = $user;
 			$_SESSION['last_logon'] = date('y-M-d');
 			?>
