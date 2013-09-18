@@ -5,17 +5,23 @@ $(document).ready(function() {
 			id: 0,
 			title: "Product 1",
 			description: "Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui."
-		},
-		{
+		},{
 			id: 1,
 			title: "Product 2",
 			description: "Elit non mi porta imon gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui."
-		},
-		{
+		},{
 			id: 2,
 			title: "Product 3",
 			description: "Non mi porta imon gravida at eget init metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui."
-		}	
+		},{
+			id: 3,
+			title: "1h med Christoffer",
+			description: "Gör vad du vill, diverse sexuella tjänster erbjuds. Allt är möjligt, all-inclusive."
+		},{
+			id: 4,
+			title: "1h med Jakob",
+			description: "Gör vad du vill, diverse sexuella tjänster erbjuds. Grädde och extra vattenslang ingår i priset."
+		}		
 	];
 	
 	
@@ -34,8 +40,12 @@ $(document).ready(function() {
 	
 	$("#products").html($.render.products(tmp));
 	
-	$(".addtocart").bind("click",function(event){
+	$(".addtocart").bind("click", function(event){
 		var id = $(this).attr("data-item");
 		alert("Product " + id + " added to your cart");
+	});
+	
+	$("#clearcart").bind("click", function(){
+		$("#cart").html("<li class='disabled'><a href='#'>Empty cart</a></li>");
 	});
 });

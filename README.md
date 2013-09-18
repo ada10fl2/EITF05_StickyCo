@@ -2,14 +2,17 @@ eitf05webshop
 =============
 Configure PHP
 /etc/php.ini
+	
 	# Set session store to be outside of the www-root
 	session.save_path="/var/lib/php/session"
 	
 	# Set the file upload to be outside of the www-root
 	upload_tmp_dir="/var/lib/php/session"
+	
 
 Configure Apache
 /etc/php.d/secutity.ini
+	
 	#dont leak information
 	expose_php=Off
 	display_errors=Off
@@ -34,7 +37,7 @@ Configure Apache
 	max_execution_time =  10
 	max_input_time = 30
 	memory_limit = 40M
-
+	
 	#disable all dangerous php functions
 	disable_functions =exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source
 	
@@ -45,7 +48,6 @@ Configure Apache
 	#Allow safemode to open/execute files only in specified directories
 	open_basedir = directory[:...]
 	safe_mode_exec_dir = directory[:...]
-	
 	
 Configure www-root, in deployed system only
 	#Make sure path is outside /var/www/html and not readable or writeable by any other system users:

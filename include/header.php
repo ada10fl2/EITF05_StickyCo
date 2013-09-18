@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!doctype html>
 <html>
 	<head>
@@ -44,7 +45,30 @@
 					<li class="active">
 						<a href="#">Products</a>
 					</li>
-					<li><a href="#about">About</a></li>
+					<li>
+						<a href="#about">About</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav pull-right">
+					
+						
+						<?php
+							if(isset($_SESSION['user'])){
+								?>
+								<li class="disabled">
+								<a href="#"><b>
+								<span class="glyphicon glyphicon-user"></span>
+								<?php
+								echo $_SESSION['user'];
+							} else { 
+								?>
+								<li>
+								<a href="login.php"><b>
+									<span class="glyphicon glyphicon-home"></span> Log in
+								<?php
+							}
+						?>
+						</b></a></li>
 				</ul>
 			</div><!-- /.nav-collapse -->
 		</div><!-- /.container -->

@@ -27,30 +27,24 @@
 
 	<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
 		<div class="well sidebar-nav">
-			<ul class="nav">
-				<li><b>Shopingcart<span class="badge pull-right">3</span></b></li>
+			<ul class="nav" id="cartheader">
+				<li>
+					<b>Shopingcart <span class="badge pull-right">3</span></b>
+				</li>
+			</ul>
+			<ul class="nav" id="cart">
 				<li><a href="#product0">1x Product 1</a></li>
 				<li><a href="#product1">2x Product 2</a></li>
 			</ul>
-			<ul class="nav">
+			<ul class="nav" id="cartfooter">
 				<li><b>Sum: 0 SEK</b></li>
 				<li>
-					<button type="button" class="btn btn-default btn-sm">
+					<button type="button" class="btn btn-default btn-sm" id="clearcart">
 						<span class="glyphicon glyphicon-trash"></span> Clear cart
 					</button>
 				</li>
 			</ul>	
 		</div><!--/.well -->
-		<a href="login.php">
-			<button type="button" class="btn btn-primary" id='btn-login'>
-				<span class="glyphicon glyphicon-home"></span> Log in
-			</button>
-		</a>
-		<a href="signup.php">
-			<button type="button" class="btn btn-default" id='btn-signup'>
-				<span class="glyphicon glyphicon-user"></span> Sign up
-			</button>
-		</a>
 	</div><!--/span-->
 </div><!--/row-->
 
