@@ -28,16 +28,34 @@
 	<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
 		<div class="well sidebar-nav">
 			<ul class="nav">
-				<li>Shopingcart</li>
+				<li><b>Shopingcart<span class="badge pull-right">3</span></b></li>
 				<li><a href="#product0">1x Product 1</a></li>
 				<li><a href="#product1">2x Product 2</a></li>
 			</ul>
 			<ul class="nav">
 				<li><b>Sum: 0 SEK</b></li>
-			</ul>
+				<li>
+					<button type="button" class="btn btn-default btn-sm">
+						<span class="glyphicon glyphicon-trash"></span> Clear cart
+					</button>
+				</li>
+			</ul>	
 		</div><!--/.well -->
+		<a href="login.php">
+			<button type="button" class="btn btn-primary" id='btn-login'>
+				<span class="glyphicon glyphicon-home"></span> Log in
+			</button>
+		</a>
+		<a href="signup.php">
+			<button type="button" class="btn btn-default" id='btn-signup'>
+				<span class="glyphicon glyphicon-user"></span> Sign up
+			</button>
+		</a>
 	</div><!--/span-->
 </div><!--/row-->
+
+
+
 <?php
 	include $_SERVER["DOCUMENT_ROOT"].'/include/footer.php';
 ?>
