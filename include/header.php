@@ -62,11 +62,10 @@
 							?>
 							<li class="disabled">
 							<a href="#">
-								<span class="glyphicon glyphicon-user"></span>
+								<b><span class="glyphicon glyphicon-user"></span> <?= $_SESSION['user'] ?></b>
 							</a>
 							</li>
 							<?php
-							echo "<b>".$_SESSION['user']."</b>";
 						} else { 
 							?>
 							<li>

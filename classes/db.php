@@ -41,6 +41,7 @@ class db {
 			$hash = hash('sha512', $crsalt);
 			if($hash === $real['Password']) {
 				//SUCCESS
+				session_start();
 				$_SESSION['user'] = $user;
 				$_SESSION['last_logon'] = date('y-M-d');
 			
@@ -73,6 +74,7 @@ class db {
 		$stmt->execute();
 		//$stmt->fetch();
 		
+		session_start();
 		$_SESSION['user'] = $user;
 		$_SESSION['last_logon'] = date('y-M-d');
 		
