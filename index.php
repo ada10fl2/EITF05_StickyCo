@@ -1,5 +1,8 @@
 <?php
-	$script = "";
+	require_once('/classes/db.php');
+	$db = new db();
+	$json = json_encode($db->get_products());
+	$script = "var products = $json";
 	$scriptfile = "/index.js";
 	$title = "EITF05 Webshop";
 	include $_SERVER["DOCUMENT_ROOT"]."/include/header.php";

@@ -28,9 +28,12 @@ $(document).ready(function() {
 	$.templates({
 		products: 
 			"<div class='col-6 col-sm-6 col-lg-4'>"+
-				"<h2>{{>title}}</h2>"+
-				"<p>{{>description}}</p>" + 
-				"<p>" + 
+				"<h2>{{>Title}}</h2>"+
+				"{{if Img}}"+
+					"<img src='{{>Img}}' alt='{{>Title}}'/>"+
+				"{{/if}}"+
+				"<p>{{>Description}}</p>" + 
+				"<p>"+ 
 					"<button type='button' class='btn btn-default btn-sm' href='/product.php?id={{>id}}'>View More <span class='glyphicon glyphicon-info-sign'></span> </button>"+
 					"<button type='button' class='btn btn-default btn-sm addtocart' data-item='{{>id}}'>Add to cart <span class='glyphicon glyphicon-shopping-cart'></span></button>"+
 				"</p>"+
@@ -38,7 +41,7 @@ $(document).ready(function() {
 			"</div>"
 	});
 	
-	$("#products").html($.render.products(tmp));
+	$("#products").html($.render.products(products));
 	
 	$(".addtocart").bind("click", function(event){
 		var id = $(this).attr("data-item");
