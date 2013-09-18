@@ -26,26 +26,23 @@
 		<p class="pull-right visible-xs">
 			<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
 		</p>
-		<div class="jumbotron">
-			<div class="login-form well">
-				<h2>Login</h2>
-				<form action="" method="POST">
-					<fieldset>
-						<label for="username">Username</label>
-						<div class="clearfix">
-							<input type="text" name="username" id="username">
-						</div>
-						
-						<label for="password">Password</label>
-						<div class="clearfix">
-							<input type="password" name="password" id="password">
-						</div>
-						<br/>
-						<button class="btn btn-default btn-lg" type="submit">Log in</button><br/><br/>
-						Not registered yet? <a href="signup.php">Sign up here</a>
-					</fieldset>
-				</form>
-			</div>
+		<div class="jumbotron">			
+			<h1>Login</h1>
+			<form action="" method="POST" role="form" id="login">
+				<div class="form-group">
+					<label class="control-label" for="username">Username</label>
+					<input type="text" class="form-control" name="username" id="username">
+				</div>
+				<div class="form-group">	
+					<label class="control-label" for="password">Password</label>
+					<input type="password" class="form-control" name="password" id="password">
+				</div>
+				
+				<button class="btn btn-default btn-lg" type="submit">Log in</button>
+				<br/><br/>
+				Not registered yet? <a href="signup.php">Sign up here</a>
+			</form>
+		
 		</div>
 	</div><!--/span-->
 </div><!--/row-->
