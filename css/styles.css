@@ -1,31 +1,48 @@
-a.thumbnail {
-	background-color: #353535;
+/*
+ * Style twaks
+ * --------------------------------------------------
+ */
+body {
+  padding-top: 70px;
+}
+footer {
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
-a.thumbnail img {
-	height: 250px;
-}
+/*
+ * Off Canvas
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 768px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+  }
 
-.modal-body{
-	padding: 0px;
-}
+  .row-offcanvas-right
+  .sidebar-offcanvas {
+    right: -50%; /* 6 columns */
+  }
 
-a.modal-image img{
-	max-height: 400px;
-}
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -50%; /* 6 columns */
+  }
 
-a.thumbnail:hover {
-    text-decoration: none;
-}
+  .row-offcanvas-right.active {
+    right: 50%; /* 6 columns */
+  }
 
-.navbar-nav li{
-	margin-left: 10px;
-}
+  .row-offcanvas-left.active {
+    left: 50%; /* 6 columns */
+  }
 
-.navbar-header {
-	margin-left: 10px !important;
-}
-
-.container>.navbar-header, .container>.navbar-collapse{
-	margin-right: 0px !important;
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 50%; /* 6 columns */
+  }
 }
