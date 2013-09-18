@@ -1,0 +1,31 @@
+a.thumbnail {
+	background-color: #353535;
+}
+
+a.thumbnail img {
+	height: 250px;
+}
+
+.modal-body{
+	padding: 0px;
+}
+
+a.modal-image img{
+	max-height: 400px;
+}
+
+a.thumbnail:hover {
+    text-decoration: none;
+}
+
+.navbar-nav li{
+	margin-left: 10px;
+}
+
+.navbar-header {
+	margin-left: 10px !important;
+}
+
+.container>.navbar-header, .container>.navbar-collapse{
+	margin-right: 0px !important;
+}
