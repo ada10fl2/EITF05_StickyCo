@@ -4,16 +4,13 @@
 	$user = isset($_POST['username']) ? $_POST['username'] : "";
 	$pass = isset($_POST['password']) ? $_POST['password'] : "";
 	if(!empty($user) && !empty($pass)) {
-		
 		require_once('/classes/db.php');
 		$db = new db();
-		
 		if($db->verify_user($user, $pass) === TRUE){
 			?>
-			<script>
-				document.location = "index.php";
-			</script>
+			<script>document.location = "index.php";</script>
 			<?php
+			$script = "var failed = false;";
 		} else {
 			$script = "var failed = true;";
 		}

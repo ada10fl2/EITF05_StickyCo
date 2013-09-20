@@ -2,7 +2,8 @@
 require_once('/classes/db.php');
 $db = new db();
 $json = json_encode($db->get_products());
-$script = "var products = $json;";
+$cart = json_encode(array());
+$script = "var products = $json; var CART = $cart";
 $scriptfile = "/index.js";
 include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 ?>

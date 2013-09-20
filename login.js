@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	
-	if(failed){
+	if(failed) {
 		$("#login").addClass("has-error");
 	}
 });

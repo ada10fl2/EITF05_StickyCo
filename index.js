@@ -1,29 +1,14 @@
-$(document).ready(function() {
+var CART = {};
+
+$(document).ready(function() {	
 	
 	var tmp = [
 		{
 			id: 0,
 			title: "Product 1",
 			description: "Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui."
-		},{
-			id: 1,
-			title: "Product 2",
-			description: "Elit non mi porta imon gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui."
-		},{
-			id: 2,
-			title: "Product 3",
-			description: "Non mi porta imon gravida at eget init metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui."
-		},{
-			id: 3,
-			title: "1h med Christoffer",
-			description: "Gör vad du vill, diverse sexuella tjänster erbjuds. Allt är möjligt, all-inclusive."
-		},{
-			id: 4,
-			title: "1h med Jakob",
-			description: "Gör vad du vill, diverse sexuella tjänster erbjuds. Grädde och extra vattenslang ingår i priset."
-		}		
+		}	
 	];
-	
 	
 	$.templates({
 		products: 
@@ -38,17 +23,32 @@ $(document).ready(function() {
 					"<button type='button' class='btn btn-default btn-sm addtocart' data-item='{{>id}}'>Add to cart <span class='glyphicon glyphicon-shopping-cart'></span></button>"+
 				"</p>"+
 				"<a id='product{{>id}}'></a>"+
-			"</div>"
+			"</div>",
+		cart : "test"
 	});
 	
 	$("#products").html($.render.products(products));
 	
 	$(".addtocart").bind("click", function(event){
 		var id = $(this).attr("data-item");
-		alert("Product " + id + " added to your cart");
+		addToCart(id);
 	});
 	
 	$("#clearcart").bind("click", function(){
-		$("#cart").html("<li class='disabled'><a href='#'>Empty cart</a></li>");
+		updateCart();
 	});
 });
+
+function updateCart(){
+	$("#cart").html($.render.cart(CART));
+}
+
+function addToCart(id){
+	CART.push(id);
+	$.getJSON( "/addToCart.php?id="+id , function(data, textStatus, jqXHR ){
+		console.log("Added item to cart: "+JSON.stringify(data));
+		CART = data;
+		updateCart();
+	});
+}
+
