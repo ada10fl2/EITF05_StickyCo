@@ -46,7 +46,6 @@
 		</div>
 	</div><!--/span-->
 </div><!--/row-->
-
 <?php
 	include $_SERVER["DOCUMENT_ROOT"].'/include/footer.php';
 ?>
