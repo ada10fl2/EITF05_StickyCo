@@ -14,15 +14,15 @@ $(document).ready(function() {
 		products: 
 			"<div class='col-6 col-sm-6 col-lg-4'>"+
 				"<h2>{{>Title}}</h2>"+
-				"{{if Img}}"+
-					"<img src='{{>Img}}' alt='{{>Title}}'/>"+
+				"{{if Image}}"+
+					"<img src='{{>Image}}' alt='{{>Title}}'/>"+
 				"{{/if}}"+
 				"<p>{{>Description}}</p>" + 
 				"<p>"+ 
-					"<button type='button' class='btn btn-default btn-sm' href='/product.php?id={{>id}}'>View More <span class='glyphicon glyphicon-info-sign'></span> </button>"+
-					"<button type='button' class='btn btn-default btn-sm addtocart' data-item='{{>id}}'>Add to cart <span class='glyphicon glyphicon-shopping-cart'></span></button>"+
+					"<button type='button' class='btn btn-default btn-sm' href='/product.php?id={{>ID}}'>View More <span class='glyphicon glyphicon-info-sign'></span> </button>"+
+					"<button type='button' class='btn btn-default btn-sm addtocart' data-item='{{>ID}}'>Add to cart <span class='glyphicon glyphicon-shopping-cart'></span></button>"+
 				"</p>"+
-				"<a id='product{{>id}}'></a>"+
+				"<a id='product{{>ID}}'></a>"+
 			"</div>",
 		cart : "test"
 	});
