@@ -26,7 +26,6 @@
 			}
 		?>
 		<script>
-			
 			$(document).ready(function(){
 				var parts = document.URL.split("/");
 				var firstFolder = parts[3];
@@ -63,6 +62,11 @@
 							<li class="disabled">
 							<a href="#">
 								<b><span class="glyphicon glyphicon-user"></span> <?= $_SESSION['user'] ?></b>
+							</a>
+							</li>
+							<li>
+							<a href="/logout.php">
+								<b>Logout</b>
 							</a>
 							</li>
 							<?php
