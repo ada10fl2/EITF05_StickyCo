@@ -77,12 +77,21 @@ class db {
 	}
 
 	function addToCart($userid, $pid){
-		if(!empty($userid) && empty($pid)){
+		if(!empty($userid) && !empty($pid)){
 			$stmt = $this->conn->prepare('INSERT INTO cart (ProductID, UserID) VALUES (:pid,:uid)');
 			$stmt->bindParam(":pid", $pid);
 			$stmt->bindParam(":uid", $userid);
 			$stmt->execute();
+			return $this->get_cart($userid);			
 		}
+	}
+	function get_cart($userid){
+		$stmt = $this->conn->prepare('SELECT ProductID, count(*) as count from cart WHERE UserID=:uid GROUP BY ProductID');
+		$stmt->bindParam(":uid", $userid);
+		$stmt->execute();
+		$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+		$json=json_encode($results);
+		return $json;
 	}
 	function create_user($user, $pass, $first, $last, $adr){
 		$stmt = $this->conn->prepare('INSERT INTO users (Username, Password, FirstName, LastName, Salt, Address) VALUES (:user,:pass,:first,:last,:salt,:adr)');
