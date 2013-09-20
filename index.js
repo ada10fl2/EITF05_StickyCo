@@ -45,7 +45,7 @@ function updateCart(){
 
 function addToCart(id){
 	CART.push(id);
-	$.getJSON( "/addToCart.php?id="+id , function(data, textStatus, jqXHR ){
+	$.getJSON( "/addToCart.php?pid="+id , function(data, textStatus, jqXHR ){
 		console.log("Added item to cart: "+JSON.stringify(data));
 		CART = data;
 		updateCart();
