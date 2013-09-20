@@ -24,7 +24,7 @@ $(document).ready(function() {
 				"</p>"+
 				"<a id='product{{>ID}}'></a>"+
 			"</div>",
-		cart : "test"
+		cart : "<li>{{>count}} x {{>ProductID}}</li>"
 	});
 	
 	$("#products").html($.render.products(products));
@@ -45,7 +45,7 @@ function updateCart(){
 
 function addToCart(id){
 	CART.push(id);
-	$.getJSON( "/addToCart.php?pid="+id , function(data, textStatus, jqXHR ){
+	$.getJSON( "/addToCart.php?pid="+id , function(data){
 		console.log("Added item to cart: "+JSON.stringify(data));
 		CART = data;
 		updateCart();
