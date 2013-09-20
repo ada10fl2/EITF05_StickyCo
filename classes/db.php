@@ -77,7 +77,9 @@ class db {
 	}
 
 	function addToCart($userid, $pid){
-		if(!empty($userid) && !empty($pid)){
+
+		if(!empty($userid)){
+
 			$stmt = $this->conn->prepare('INSERT INTO cart (ProductID, UserID) VALUES (:pid,:uid)');
 			$stmt->bindParam(":pid", $pid);
 			$stmt->bindParam(":uid", $userid);
@@ -86,7 +88,7 @@ class db {
 		}
 	}
 	function get_cart($userid){
-		$stmt = $this->conn->prepare('SELECT ProductID, count(*) as count from cart WHERE UserID=:uid GROUP BY ProductID');
+		$stmt = $this->conn->prepare('SELECT cart.ProductID, count(*) as count , products.Title from cart INNER JOIN products ON cart.ProductID=products.ID WHERE cart.UserID=:uid GROUP BY cart.ProductID');
 		$stmt->bindParam(":uid", $userid);
 		$stmt->execute();
 		$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
