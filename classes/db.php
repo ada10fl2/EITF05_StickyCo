@@ -66,6 +66,7 @@ class db {
 				//SUCCESS
 				session_start();
 				$_SESSION['user'] = $user;
+				$_SESSION['userid'] = $real['ID'];
 				$_SESSION['last_logon'] = date('y-M-d');
 			
 				return TRUE;
@@ -75,6 +76,14 @@ class db {
 		}
 	}
 
+	function addToCart($userid, $pid){
+		if(!empty($userid) && empty($pid)){
+			$stmt = $this->conn->prepare('INSERT INTO cart (ProductID, UserID) VALUES (:pid,:uid)');
+			$stmt->bindParam(":pid", $pid);
+			$stmt->bindParam(":uid", $userid);
+			$stmt->execute();
+		}
+	}
 	function create_user($user, $pass, $first, $last, $adr){
 		$stmt = $this->conn->prepare('INSERT INTO users (Username, Password, FirstName, LastName, Salt, Address) VALUES (:user,:pass,:first,:last,:salt,:adr)');
 		$stmt->bindParam(":user", $user);
