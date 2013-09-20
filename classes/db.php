@@ -38,7 +38,14 @@ class db {
 		// Finally, destroy the session.
 		session_destroy();
 	}
-	
+	function create_pass($pass, $salt){
+		$cipher = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_CBC,'');
+		mcrypt_generic_init($cipher, CODE_SALT, IV);
+		$crsalt = mcrypt_generic($cipher, "$pass$salt");
+		
+		$hash = hash('sha512', $crsalt);
+		return $hash;
+	}
 	function verify_user($user, $pass){
 		if(empty($user) || empty($pass)){
 			throw new Exception("Empty user or pass");
@@ -53,11 +60,8 @@ class db {
 			$real = $stmt->fetch(PDO::FETCH_ASSOC);
 			$salt = $real['Salt'];
 			
-			$cipher = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_CBC,'');
-			mcrypt_generic_init($cipher, CODE_SALT, IV);
-			$crsalt = mdecrypt_generic($cipher, "$pass$salt");
 			
-			$hash = hash('sha512', $crsalt);
+			$hash = $this->create_pass($pass, $salt);
 			if($hash === $real['Password']) {
 				//SUCCESS
 				session_start();
@@ -70,7 +74,7 @@ class db {
 			}
 		}
 	}
-	
+
 	function create_user($user, $pass, $first, $last, $adr){
 		$stmt = $this->conn->prepare('INSERT INTO users (Username, Password, FirstName, LastName, Salt, Address) VALUES (:user,:pass,:first,:last,:salt,:adr)');
 		$stmt->bindParam(":user", $user);
@@ -81,15 +85,10 @@ class db {
 		$p0 = uniqid(mt_rand(), true); // 240 bit entropy each
 		$p1 = uniqid(mt_rand(), true); // http://stackoverflow.com/questions/4099333/how-to-generate-a-good-salt-is-my-function-secure-enough
 		$salt = $p0.$p1;
-		
-		$cipher = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_CBC,'');
-		mcrypt_generic_init($cipher, CODE_SALT, IV);
-		$crsalt = mcrypt_generic($cipher, "$pass$salt");
-		
-		$hash = hash('sha512', $crsalt);
+
+		$h = $this->create_pass($pass, $salt);
+		$stmt->bindParam(":hash", $h);
 		$stmt->bindParam(":salt", $salt);
-		
-		$stmt->bindParam(":pass", $hash);
 		$stmt->execute();
 		//$stmt->fetch();
 		
