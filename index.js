@@ -19,7 +19,8 @@ $(document).ready(function() {
 					"<img src='{{>Image}}' alt='{{>Title}}' width='200' >"+
 					"</center>"+
 				"{{/if}}"+
-				"<p>{{>Description}}</p>" + 
+				"<div class='product-description'><p>{{>Description}}</p></div>" + 
+				"<p>{{>Price}} SEK</p>" + 
 				"<p>"+ 
 					"<button type='button' class='btn btn-default btn-sm showproduct' data-item='{{>ID}}'>View More <span class='glyphicon glyphicon-info-sign'></span> </button>"+
 					"<button type='button' class='btn btn-default btn-sm addtocart' data-item='{{>ID}}'>Add to cart <span class='glyphicon glyphicon-shopping-cart'></span></button>"+
