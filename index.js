@@ -13,14 +13,16 @@ $(document).ready(function() {
 	$.templates({
 		products: 
 			"<div class='col-6 col-sm-6 col-lg-4 product'>"+
-				"<h2>{{>Title}}</h2>"+
+				"<h2 class='product-header'>{{trunc:Title}}</h2>"+
 				"{{if Image}}"+
 					"<center>"+
 					"<img src='{{>Image}}' alt='{{>Title}}' width='200' >"+
 					"</center>"+
 				"{{/if}}"+
+				"<div class='product-info'>"+
 				"<div class='product-description'><p>{{>Description}}</p></div>" + 
-				"<p>{{>Price}} SEK</p>" + 
+				"<p><b>{{>Price}} SEK</b></p>" + 
+				"</div>"+
 				"<p>"+ 
 					"<button type='button' class='btn btn-default btn-sm showproduct' data-item='{{>ID}}'>View More <span class='glyphicon glyphicon-info-sign'></span> </button>"+
 					"<button type='button' class='btn btn-default btn-sm addtocart' data-item='{{>ID}}'>Add to cart <span class='glyphicon glyphicon-shopping-cart'></span></button>"+
@@ -49,6 +51,11 @@ $(document).ready(function() {
 				"<button type='button' class='btn btn-default addtocartmodal' data-item='{{>ID}}'>Add to cart <span class='glyphicon glyphicon-shopping-cart'></span></button>"+
 				"<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>"+
 			"</div>"
+	});
+	
+	$.views.converters("trunc", function(val) {
+		var size = 20;
+		return (val.length > size) ? val.substring(0, size-3)+"..." : val; 
 	});
 	
 	$("#products").html($.render.products(products));
@@ -87,8 +94,8 @@ function updateCart(){
 	} else {
 		$("#cart").html($.render.cart(cart['content']));
 	}
-	$("#cart_size").text();
-	$("#cart_price").text();
+	$("#cart_size").text(size);
+	$("#cart_price").text(price);
 }
 function clearCart(){
 	$.getJSON( "/cart.php?action=clear" , {})

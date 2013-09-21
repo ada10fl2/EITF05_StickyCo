@@ -46,6 +46,9 @@ footer {
     width: 50%; /* 6 columns */
   }
 }
+.product-header {
+	white-space: nowrap; overflow: hidden;
+}
 .product-description {
 	height: 160px;
 }
