@@ -42,7 +42,6 @@ class db {
 		$cipher = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_CBC,'');
 		mcrypt_generic_init($cipher, CODE_SALT, IV);
 		$crsalt = mcrypt_generic($cipher, "$pass$salt");
-		
 		$hash = hash('sha512', $crsalt);
 		return $hash;
 	}
@@ -76,25 +75,49 @@ class db {
 		}
 	}
 
-	function addToCart($userid, $pid){
-
-		if(!empty($userid)){
-
-			$stmt = $this->conn->prepare('INSERT INTO cart (ProductID, UserID) VALUES (:pid,:uid)');
-			$stmt->bindParam(":pid", $pid);
+	function cart_add($userid, $pid){
+		if(is_numeric($userid)){
+			if(is_numeric($pid)){
+				$stmt = $this->conn->prepare('INSERT INTO cart (ProductID, UserID) VALUES (:pid,:uid)');
+				$stmt->bindParam(":pid", $pid);
+				$stmt->bindParam(":uid", $userid);
+				$stmt->execute();
+				return $this->cart_get($userid);			
+			}//Invalid pid
+		}//Invalid uid
+		var_dump($userid, $pid);
+		return FALSE;
+	}
+	
+	function cart_clear($userid){
+		if(!empty($userid) && is_numeric($userid)){
+			$stmt = $this->conn->prepare('DELETE from cart WHERE cart.UserID=:uid');
 			$stmt->bindParam(":uid", $userid);
 			$stmt->execute();
-			return $this->get_cart($userid);			
-		}
+			return $this->cart_get($userid);			
+		}//Invalid uid
+		return FALSE;
 	}
-	function get_cart($userid){
-		$stmt = $this->conn->prepare('SELECT cart.ProductID, count(*) as count , products.Title from cart INNER JOIN products ON cart.ProductID=products.ID WHERE cart.UserID=:uid GROUP BY cart.ProductID');
-		$stmt->bindParam(":uid", $userid);
-		$stmt->execute();
-		$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
-		$json=json_encode($results);
-		return $json;
+	
+	function cart_get($userid){
+		if(!empty($userid) && is_numeric($userid)){
+			$stmt = $this->conn->prepare('SELECT cart.ProductID, count(*) as count , products.Title from cart INNER JOIN products ON cart.ProductID=products.ID WHERE cart.UserID=:uid GROUP BY cart.ProductID');
+			$stmt->bindParam(":uid", $userid);
+			$stmt->execute();
+			$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+			$totalcount = 0;
+			$totelprice = 0;
+			foreach($results as $itm){
+				$totalcount += $itm['count'];
+				$totalprice = $itm['count'] * 1; // Price here!
+			}
+			$results['count'] = $totalcount;
+			$results['price'] = $totalprice;
+			return $results;
+		}//Invalid uid
+		return FALSE;
 	}
+	
 	function create_user($user, $pass, $first, $last, $adr){
 		$stmt = $this->conn->prepare('INSERT INTO users (Username, Password, FirstName, LastName, Salt, Address) VALUES (:user,:pass,:first,:last,:salt,:adr)');
 		$stmt->bindParam(":user", $user);

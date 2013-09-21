@@ -1,4 +1,4 @@
-var CART = {};
+var CART = [];
 
 $(document).ready(function() {	
 	
@@ -24,7 +24,7 @@ $(document).ready(function() {
 				"</p>"+
 				"<a id='product{{>ID}}'></a>"+
 			"</div>",
-		cart : "<li>{{>count}} x {{>ProductID}}</li>"
+		cart : "<li><b>{{>Title}}</b><br />{{>count}} </li>"
 	});
 	
 	$("#products").html($.render.products(products));
@@ -34,21 +34,28 @@ $(document).ready(function() {
 		addToCart(id);
 	});
 	
-	$("#clearcart").bind("click", function(){
+	$("#cart_clear").bind("click", function(){
 		updateCart();
 	});
 });
 
 function updateCart(){
-	$("#cart").html($.render.cart(CART));
+	$("#cart").html($.render.cart(cart));
+	$("#cart_size").text(cart['count']);
+	$("#cart_price").text(cart['price']);
+	
 }
 
 function addToCart(id){
-	CART.push(id);
-	$.getJSON( "/addToCart.php?pid="+id , function(data){
-		console.log("Added item to cart: "+JSON.stringify(data));
-		CART = data;
-		updateCart();
+	$.getJSON( "/cart.php?action=add&pid="+id , {})
+	.done(function(data){
+		if(data === false){
+			console.log("Failed to add to cart");
+		} else {
+			console.log("Added item to cart: "+JSON.stringify(data));
+			cart = data;
+			updateCart();
+		}
 	});
 }
 

@@ -3,7 +3,7 @@ require_once('/classes/db.php');
 $db = new db();
 $json = json_encode($db->get_products());
 $cart = json_encode(array());
-$script = "var products = $json; var CART = $cart";
+$script = "var products = $json; var cart = $cart";
 $scriptfile = "/index.js";
 include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 ?>
@@ -30,19 +30,18 @@ include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 
 	<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
 		<div class="well sidebar-nav">
-			<ul class="nav" id="cartheader">
+			<ul class="nav" id="cart_header">
 				<li>
-					<b>Shopingcart <span class="badge pull-right">3</span></b>
+					<b>Shopingcart <span class="badge pull-right" id="cart_size">0</span></b>
 				</li>
 			</ul>
 			<ul class="nav" id="cart">
-				<li><a href="#product0">1x Product 1</a></li>
-				<li><a href="#product1">2x Product 2</a></li>
+				<li><br /></li>
 			</ul>
-			<ul class="nav" id="cartfooter">
-				<li><b>Sum: 0 SEK</b></li>
+			<ul class="nav" id="cart_footer">
+				<li><b>Sum: <span id="cart_price">0</span> SEK</b></li>
 				<li>
-					<button type="button" class="btn btn-default btn-sm" id="clearcart">
+					<button type="button" class="btn btn-default btn-sm" id="cart_clear">
 						<span class="glyphicon glyphicon-trash"></span> Clear cart
 					</button>
 				</li>
