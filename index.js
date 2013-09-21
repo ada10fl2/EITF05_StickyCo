@@ -21,12 +21,29 @@ $(document).ready(function() {
 				"{{/if}}"+
 				"<p>{{>Description}}</p>" + 
 				"<p>"+ 
-					"<button type='button' class='btn btn-default btn-sm showproduct' href='/product.php?id={{>ID}}'>View More <span class='glyphicon glyphicon-info-sign'></span> </button>"+
+					"<button type='button' class='btn btn-default btn-sm showproduct' data-item='{{>ID}}'>View More <span class='glyphicon glyphicon-info-sign'></span> </button>"+
 					"<button type='button' class='btn btn-default btn-sm addtocart' data-item='{{>ID}}'>Add to cart <span class='glyphicon glyphicon-shopping-cart'></span></button>"+
 				"</p>"+
 				"<a id='product{{>ID}}'></a>"+
 			"</div>",
-		cart : "<li><b>{{>Title}}</b><br />{{>count}} * {{>price}} SEK = {{>prodtotal}} SEK</li>"
+		cart : 
+			"<li><b>{{>Title}}</b><br />{{>count}} * {{>price}} SEK = {{>prodtotal}} SEK</li>",
+		showproduct: 
+			"<div class='modal-header'>"+
+				"<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>"+
+				"<h4 class='modal-title'>{{>Title}}</h4>"+
+			"</div>"+
+			"<div class='modal-body'>"+
+				"{{if Image}}"+
+					"<center>"+
+					"<img src='{{>Image}}' alt='{{>Title}}' width='400' >"+
+					"</center><br />"+
+				"{{/if}}"+
+				"<p>{{>Description}}</p>" + 
+			"</div>"+
+			"<div class='modal-footer'>"+
+				"<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>"+
+			"</div>"
 	});
 	
 	$("#products").html($.render.products(products));
@@ -35,6 +52,16 @@ $(document).ready(function() {
 	$(".addtocart").bind("click", function(event){
 		var id = $(this).attr("data-item");
 		addToCart(id);
+	});
+	
+	$(".showproduct").bind("click", function(){
+		var id = $(this).attr("data-item");
+		for(var i=0; i<products.length; i++){
+			if(products[i].ID === id){
+				$('#myModal').find(".modal-content:first").html($.render.showproduct(products[i]));
+				$('#myModal').modal();
+			}
+		}
 	});
 	
 	$("#cart_clear").bind("click", function(){
