@@ -12,7 +12,7 @@ $(document).ready(function() {
 	
 	$.templates({
 		products: 
-			"<div class='col-6 col-sm-6 col-lg-4'>"+
+			"<div class='col-6 col-sm-6 col-lg-4 product'>"+
 				"<h2>{{>Title}}</h2>"+
 				"{{if Image}}"+
 					"<center>"+
