@@ -107,7 +107,7 @@ class db {
 		}//Invalid uid
 		return FALSE;
 	}
-	
+
 	function cart_get($userid){
 		if(!empty($userid) && is_numeric($userid)){
 			$stmt = $this->conn->prepare('SELECT cart.ProductID as ID, products.Image as Image,  products.price as price, count(*) as count , products.Title from cart INNER JOIN products ON cart.ProductID=products.ID WHERE cart.UserID=:uid GROUP BY cart.ProductID');
@@ -127,7 +127,17 @@ class db {
 		}//Invalid uid
 		return array("content" => array(), "count" => 0, "price" => 0);
 	}
-	
+	function create_order($uid, $order,$first, $last, $adr){
+		$stmt = $this->conn->prepare('INSERT INTO Orders (UserID, OrderContent, Firstname, Lastname, Adress) VALUES (:user,:order,:first,:last,:adr)');
+		$stmt->bindParam(":user", $uid);
+		$stmt->bindParam(":first", $first);
+		$stmt->bindParam(":last", $last);
+		$stmt->bindParam(":adr", $adr);
+		$stmt->bindParam(":order", $order);
+		$stmt->execute();
+		
+		return TRUE;
+	}
 	function create_user($user, $pass, $first, $last, $adr){
 		$stmt = $this->conn->prepare('INSERT INTO users (Username, Password, FirstName, LastName, Salt, Address) VALUES (:user,:pass,:first,:last,:salt,:adr)');
 		$stmt->bindParam(":user", $user);
@@ -175,6 +185,13 @@ class db {
 		}//Invalid uid
 		return FALSE;
 
+	}
+
+	function get_user($uid){
+		$stmt = $this->conn->prepare('SELECT * FROM users WHERE ID=:uid');
+		$stmt->bindParam(":uid", $uid);
+		$stmt->execute();
+		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 }
 ?>
