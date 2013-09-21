@@ -95,7 +95,6 @@ class db {
 				return $this->cart_get($userid);			
 			}//Invalid pid
 		}//Invalid uid
-		var_dump($userid, $pid);
 		return FALSE;
 	}
 	
