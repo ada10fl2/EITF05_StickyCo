@@ -11,7 +11,8 @@ class db {
 		$this->conn = new PDO("mysql:host=$host;dbname=$name", $user, $pass);
 		$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		define("CODE_SALT", "939760F3ACEE1D02785A4CE834A98E0301FE92E4E77F7C48E0A7206B");
-		define("PASSWORD_COST", 12);
+		define("PASSWORD_COST", 12 * pow(1.2, idate('y') - 13) ); 
+		//Hard to tell right now but it look fessible: http://www.wolframalpha.com/input/?i=12+*+pow%281.2%2C+x+-+13%29
 	}
 	
 	function get_products(){
@@ -49,7 +50,7 @@ class db {
 		session_destroy();
 	}
 	
-	function create_pass($user_obj, $pass){
+	function create_pass($pass){
 		return password_hash($pass.CODE_SALT, PASSWORD_BCRYPT, array('cost' => PASSWORD_COST));
 	}
 	
@@ -97,19 +98,14 @@ class db {
 			return FALSE;
 		}
 		
-		$stmt = $this->conn->prepare('INSERT INTO users (Username, Password, FirstName, LastName, Salt, Address) VALUES (:user,:hash,:first,:last,:salt,:adr)');
+		$stmt = $this->conn->prepare('INSERT INTO users (Username, Password, FirstName, LastName, Address) VALUES (:user,:pass,:first,:last,:adr)');
 		$stmt->bindParam(":user", $user);
 		$stmt->bindParam(":first", $first);
 		$stmt->bindParam(":last", $last);
 		$stmt->bindParam(":adr", $adr);
 		
-		$p0 = uniqid(mt_rand(), true); // 240 bit entropy each
-		$p1 = uniqid(mt_rand(), true); // http://stackoverflow.com/questions/4099333/how-to-generate-a-good-salt-is-my-function-secure-enough
-		$salt = $p0.$p1;
-
 		$h = $this->create_pass($pass);
-		$stmt->bindParam(":hash", $h);
-		$stmt->bindParam(":salt", $salt);
+		$stmt->bindParam(":pass", $h);
 		$stmt->execute();
 		//$stmt->fetch();
 		
