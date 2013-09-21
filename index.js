@@ -15,7 +15,9 @@ $(document).ready(function() {
 			"<div class='col-6 col-sm-6 col-lg-4'>"+
 				"<h2>{{>Title}}</h2>"+
 				"{{if Image}}"+
-					"<img src='{{>Image}}' alt='{{>Title}}'/>"+
+					"<center>"+
+					"<img src='{{>Image}}' alt='{{>Title}}' width='200' >"+
+					"</center>"+
 				"{{/if}}"+
 				"<p>{{>Description}}</p>" + 
 				"<p>"+ 
