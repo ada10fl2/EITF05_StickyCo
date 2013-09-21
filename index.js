@@ -19,7 +19,7 @@ $(document).ready(function() {
 				"{{/if}}"+
 				"<p>{{>Description}}</p>" + 
 				"<p>"+ 
-					"<button type='button' class='btn btn-default btn-sm' href='/product.php?id={{>ID}}'>View More <span class='glyphicon glyphicon-info-sign'></span> </button>"+
+					"<button type='button' class='btn btn-default btn-sm showproduct' href='/product.php?id={{>ID}}'>View More <span class='glyphicon glyphicon-info-sign'></span> </button>"+
 					"<button type='button' class='btn btn-default btn-sm addtocart' data-item='{{>ID}}'>Add to cart <span class='glyphicon glyphicon-shopping-cart'></span></button>"+
 				"</p>"+
 				"<a id='product{{>ID}}'></a>"+
@@ -35,16 +35,42 @@ $(document).ready(function() {
 		addToCart(id);
 	});
 	
+	$(".showproduct").bind("click", function(event){
+		var id = $(this).attr("data-item");
+		$('#productLightbox').lightbox({
+			keyboard: true,
+			show: true
+		});
+	});
+	
 	$("#cart_clear").bind("click", function(){
-		updateCart();
+		clearCart();
 	});
 });
 
 function updateCart(){
-	$("#cart").html($.render.cart(cart['content']));
-	$("#cart_size").text(cart['count']);
-	$("#cart_price").text(cart['price']);
-	
+	var content = cart['content'];
+	var size = cart['count'];
+	var price = cart['price'];
+	if(size === 0){
+		$("#cart").html("<span class='emptycart'>Empty cart</span>");
+	} else {
+		$("#cart").html($.render.cart(cart['content']));
+	}
+	$("#cart_size").text();
+	$("#cart_price").text();
+}
+function clearCart(){
+	$.getJSON( "/cart.php?action=clear" , {})
+	.done(function(data){
+		if(data === false){
+			console.log("Failed to clear cart");
+		} else {
+			console.log("Cleared cart: "+JSON.stringify(data));
+			cart = data;
+			updateCart();
+		}
+	});
 }
 
 function addToCart(id){
