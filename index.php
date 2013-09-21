@@ -44,9 +44,8 @@ include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 					<h3>Shopingcart <span class="badge pull-right" id="cart_size">0</span></h3>
 				</li>
 			</ul>
-			<ul class="nav" id="cart">
-				<li><br /></li>
-			</ul>
+			<table class="nav" id="cart" width="100%">
+			</table>
 			<ul class="nav" id="cart_footer">
 				<li><h4>Sum: <span id="cart_price">0</span> SEK</h4></li>
 				<li>

@@ -16,7 +16,7 @@ $(document).ready(function() {
 				"<h2 class='product-header'>{{trunc:Title}}</h2>"+
 				"{{if Image}}"+
 					"<center>"+
-					"<img src='{{>Image}}' alt='{{>Title}}' width='200' >"+
+					"<img src='img/medium/{{>Image}}' alt='{{>Title}}' width='200' >"+
 					"</center>"+
 				"{{/if}}"+
 				"<div class='product-info'>"+
@@ -30,7 +30,11 @@ $(document).ready(function() {
 				"<a id='product{{>ID}}'></a>"+
 			"</div>",
 		cart : 
-			"<li><b>{{>Title}}</b><br />{{>count}} * {{>price}} SEK = {{>prodtotal}} SEK</li>",
+			"<tr><td colspan=3><b>{{>Title}}</b><td></tr>"+
+				"<tr><td>{{if Image}}"+
+					"<img src='img/small/{{>Image}}' alt='{{>Title}}' width='40' >"+
+				"{{/if}}</td>"+
+				"<td>{{>count}}st</td> <td>{{>price}} kr/st<td>  <td>{{>prodtotal}} kr</td></tr>",
 		showproduct: 
 			"<div class='modal-header'>"+
 				"<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>"+
@@ -39,7 +43,7 @@ $(document).ready(function() {
 			"<div class='modal-body'>"+
 				"{{if Image}}"+
 					"<center>"+
-					"<img src='{{>Image}}' alt='{{>Title}}' width='400' >"+
+					"<img src='img/large/{{>Image}}' alt='{{>Title}}' width='400' >"+
 					"</center><br />"+
 				"{{/if}}"+
 				"<b>Price:</b><br>" + 
