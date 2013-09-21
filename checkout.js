@@ -63,6 +63,27 @@ $(document).ready(function() {
 			elm.parent().attr("class", "has-error");
 		}
 });
+$("#order").submit(function(){
+		var bindError = function(id, filter, error){
+			var elm = $(id);
+			if(filter.test(elm.val())){
+				elm.parent().attr("class","has-success");
+			} else {
+				elm.parent().attr("class","has-error");
+				elm.parent().find(".help-block").text(error);
+			}
+		}
+		
+		var filter_first = /^[\w ]{3,20}$/i;
+		var filter_last = /^[\w ]{3,20}$/i;
+		var filter_adr = /^[\w ]{4,20}$/i;
+		
+		bindError("#firstname", filter_first, "Must be 3-20 alphanumerical characters" );
+		bindError("#lastname", filter_last, "Must be 3-20 alphanumerical characters" );
+		bindError("#address", filter_adr, "Must be 4-20 characters" );
+		
+		return true;	
+	});
 });
 function Calculate(Luhn) {
 		
