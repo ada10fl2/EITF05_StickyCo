@@ -55,7 +55,7 @@ class db {
 	}
 	
 	function verify_pass($user_obj, $trypass){
-		if (password_verify($trypass.CODE_SALT, $user_obj['Password'])) { //Validate
+		if (!password_verify($trypass.CODE_SALT, $user_obj['Password'])) { //Validate
 			return FALSE;
 		}
 		if(password_needs_rehash($user_obj['Password'], PASSWORD_COST)){ // Ensure hash is update-to-date
