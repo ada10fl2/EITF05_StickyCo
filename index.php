@@ -41,14 +41,14 @@ include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 		<div class="well sidebar-nav">
 			<ul class="nav" id="cart_header">
 				<li>
-					<b>Shopingcart <span class="badge pull-right" id="cart_size">0</span></b>
+					<h3>Shopingcart <span class="badge pull-right" id="cart_size">0</span></h3>
 				</li>
 			</ul>
 			<ul class="nav" id="cart">
 				<li><br /></li>
 			</ul>
 			<ul class="nav" id="cart_footer">
-				<li><b>Sum: <span id="cart_price">0</span> SEK</b></li>
+				<li><h4>Sum: <span id="cart_price">0</span> SEK</h4></li>
 				<li>
 					<button type="button" class="btn btn-default btn-sm" id="cart_clear">
 						<span class="glyphicon glyphicon-trash"></span> Clear cart

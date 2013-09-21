@@ -39,9 +39,13 @@ $(document).ready(function() {
 					"<img src='{{>Image}}' alt='{{>Title}}' width='400' >"+
 					"</center><br />"+
 				"{{/if}}"+
+				"<b>Price:</b><br>" + 
+				"<p>{{>Price}} SEK</p>" + 
+				"<b>Description:</b><br>" + 
 				"<p>{{>Description}}</p>" + 
 			"</div>"+
 			"<div class='modal-footer'>"+
+				"<button type='button' class='btn btn-default addtocartmodal' data-item='{{>ID}}'>Add to cart <span class='glyphicon glyphicon-shopping-cart'></span></button>"+
 				"<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>"+
 			"</div>"
 	});
@@ -60,6 +64,10 @@ $(document).ready(function() {
 			if(products[i].ID === id){
 				$('#myModal').find(".modal-content:first").html($.render.showproduct(products[i]));
 				$('#myModal').modal();
+				$(".addtocartmodal").bind("click", function(event){
+					var id = $(this).attr("data-item");
+					addToCart(id);
+				});
 			}
 		}
 	});
