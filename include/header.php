@@ -11,15 +11,12 @@
 		<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
 		
-		<link href="/css/bootstrap-lightbox.min.css" rel="stylesheet">
 		<link href="/css/styles.css" rel="stylesheet">
 		
 		<script src="/js/jquery.v1.10.2.min.js"></script>
 		<script src="/js/jsrender.min.js"></script>
 		<script src="/js/bootstrap.min.js"></script>
-		<script src="/js/bootstrap-lightbox.js"></script>
 		<script src="/js/bootstrap-tooltip.js"></script>
-		<script src="/js/bootstrap-thumb-lightbox-w-tooltip.js"></script>
 		<?php
 			if(!(trim($scriptfile) == false)){
 				echo "<script src='$scriptfile'></script>";

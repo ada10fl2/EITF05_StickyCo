@@ -15,7 +15,7 @@ include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 			<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
 		</p>
 		<div class="jumbotron">
-			<h1>StickyCo.se</h1>
+			<p><img src="/img/logo.png" alt="StickyCo.se"></p>
 			<p>Checkout our awesome stickers!</p>
 		</div>
 		<div class="row" id="products">
@@ -29,7 +29,7 @@ include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 		</div><!--/row-->
 	</div><!--/span-->
 	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">Skate
 		<div class="modal-dialog">
 		  <div class="modal-content">
 			Katt
