@@ -142,5 +142,14 @@ class db {
 		
 		return TRUE;
 	}
+
+	function create_prod($img, $title, $price, $desc ){
+		$stmt = $this->conn->prepare('INSERT INTO products (Image, Title, Description, Price, Visible) VALUES (:img,:title,:des,:prc,1)');
+		$stmt->bindParam(":img", $img);
+		$stmt->bindParam(":title", $title);
+		$stmt->bindParam(":des", $desc);
+		$stmt->bindParam(":prc", $price);
+		$stmt->execute();
+	}
 }
 ?>
