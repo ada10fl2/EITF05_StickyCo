@@ -101,18 +101,21 @@ class db {
 	
 	function cart_get($userid){
 		if(!empty($userid) && is_numeric($userid)){
-			$stmt = $this->conn->prepare('SELECT cart.ProductID, count(*) as count , products.Title from cart INNER JOIN products ON cart.ProductID=products.ID WHERE cart.UserID=:uid GROUP BY cart.ProductID');
+			$stmt = $this->conn->prepare('SELECT cart.ProductID, products.price as price, count(*) as count , products.Title from cart INNER JOIN products ON cart.ProductID=products.ID WHERE cart.UserID=:uid GROUP BY cart.ProductID');
 			$stmt->bindParam(":uid", $userid);
 			$stmt->execute();
 			$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
 			$totalcount = 0;
-			$totelprice = 0;
+			$totalprice = 0;
+			$prod = 0;
 			foreach($results as $itm){
 				$totalcount += $itm['count'];
-				$totalprice = $itm['count'] * 1; // Price here!
+				$totalprice += $itm['count'] * $itm['price']; // Price here!
+				$results[$prod]['prodtotal'] = $itm['count'] * $itm['price'];
+				$prod += 1;
 			}
 			$results['count'] = $totalcount;
-			$results['price'] = $totalprice;
+			$results['totalprice'] = $totalprice;
 			return $results;
 		}//Invalid uid
 		return FALSE;

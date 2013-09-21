@@ -23,4 +23,9 @@
 	if($action === "clear"){
 		echo json_encode($db->cart_clear($_SESSION['userid']));
 	}
+
+	if($action === "show"){
+		$json = $db->cart_get($_SESSION['userid'], $pid);
+		echo json_encode($json);
+	}
 ?>
