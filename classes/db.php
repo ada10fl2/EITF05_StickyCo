@@ -1,6 +1,4 @@
 <?php
-const CODE_SALT = "939760F3ACEE1D02785A4CE834A98E0301FE92E4E77F7C48E0A7206B";
-const IV = "84983107";
 
 class db {
 	private $conn;
@@ -12,6 +10,8 @@ class db {
 		$host = "78.73.132.182";
 		$this->conn = new PDO("mysql:host=$host;dbname=$name", $user, $pass);
 		$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		define("CODE_SALT", "939760F3ACEE1D02785A4CE834A98E0301FE92E4E77F7C48E0A7206B");
+		define("PASSWORD_COST", 12);
 	}
 	
 	function get_products(){
@@ -49,31 +49,37 @@ class db {
 		session_destroy();
 	}
 	
-	function create_pass($pass, $salt){
-		$cipher = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_CBC,'');
-		mcrypt_generic_init($cipher, CODE_SALT, IV);
-		$crsalt = mcrypt_generic($cipher, "$pass$salt");
-		$hash = hash('sha512', $crsalt);
-		return $hash;
+	function create_pass($user_obj, $pass){
+		return password_hash($pass.CODE_SALT, PASSWORD_BCRYPT, array('cost' => PASSWORD_COST));
 	}
 	
-	function verify_user($user, $pass){
+	function verify_pass($user_obj, $trypass){
+		if (password_verify($trypass.CODE_SALT, $user_obj['Password'])) { //Validate
+			return FALSE;
+		}
+		if(password_needs_rehash($user_obj['Password'], PASSWORD_COST)){ // Ensure hash is update-to-date
+			$new = $this->create_pass($trypass);
+			$stmt = $this->conn->prepare('UPDATE users SET Password=:pass WHERE ID=:userid');
+			$stmt->bindParam(":userid", $user_obj['ID']);
+			$stmt->bindParam(":pass", $new);
+			$stmt->execute();
+		}
+		return TRUE;
+	}
+	
+	function verify_user($user, $trypass){
 		$stmt = $this->conn->prepare('SELECT * FROM users WHERE Username=:user');
 		$stmt->bindParam(":user", $user);
 		$stmt->execute();
-		
 		if($stmt->rowCount() === 0){
 			return FALSE;
 		} else {
-			$real = $stmt->fetch(PDO::FETCH_ASSOC);
-			$salt = $real['Salt'];
-			
-			$hash = $this->create_pass($pass, $salt);
-			if($hash === $real['Password']) {
+			$user_obj = $stmt->fetch(PDO::FETCH_ASSOC);
+			if(verify_pass($user_obj, $trypass)) {
 				//SUCCESS
 				session_start();
 				$_SESSION['user'] = $user;
-				$_SESSION['userid'] = $real['ID'];
+				$_SESSION['userid'] = $user_obj['ID'];
 				$_SESSION['last_logon'] = date('y-M-d');
 				return TRUE;
 			} else {
@@ -81,7 +87,38 @@ class db {
 			}
 		}
 	}
+	
+	function create_user($user, $pass, $first, $last, $adr){
+		$exist = $this->conn->prepare('SELECT * from users WHERE Username=:user');
+		$exist->bindParam(":user", $user);
+		$exist->execute();
+		
+		if(count($exist->fetchAll()) > 0){ //Prevent duplicate user
+			return FALSE;
+		}
+		
+		$stmt = $this->conn->prepare('INSERT INTO users (Username, Password, FirstName, LastName, Salt, Address) VALUES (:user,:hash,:first,:last,:salt,:adr)');
+		$stmt->bindParam(":user", $user);
+		$stmt->bindParam(":first", $first);
+		$stmt->bindParam(":last", $last);
+		$stmt->bindParam(":adr", $adr);
+		
+		$p0 = uniqid(mt_rand(), true); // 240 bit entropy each
+		$p1 = uniqid(mt_rand(), true); // http://stackoverflow.com/questions/4099333/how-to-generate-a-good-salt-is-my-function-secure-enough
+		$salt = $p0.$p1;
 
+		$h = $this->create_pass($pass);
+		$stmt->bindParam(":hash", $h);
+		$stmt->bindParam(":salt", $salt);
+		$stmt->execute();
+		//$stmt->fetch();
+		
+		session_start();
+		$_SESSION['user'] = $user;
+		$_SESSION['last_logon'] = date('y-M-d');
+		
+		return TRUE;
+	}
 	function cart_add($userid, $pid){
 		if(is_numeric($userid)){
 			if(is_numeric($pid)){
@@ -132,37 +169,6 @@ class db {
 		$stmt->bindParam(":adr", $adr);
 		$stmt->bindParam(":order", $order);
 		$stmt->execute();
-		
-		return TRUE;
-	}
-	function create_user($user, $pass, $first, $last, $adr){
-		$exist = $this->conn->prepare('SELECT * from users WHERE Username=:user');
-		$exist->bindParam(":user", $user);
-		$exist->execute();
-		
-		if(count($exist->fetchAll()) > 0){ //Prevent duplicate user
-			return FALSE;
-		}
-		
-		$stmt = $this->conn->prepare('INSERT INTO users (Username, Password, FirstName, LastName, Salt, Address) VALUES (:user,:hash,:first,:last,:salt,:adr)');
-		$stmt->bindParam(":user", $user);
-		$stmt->bindParam(":first", $first);
-		$stmt->bindParam(":last", $last);
-		$stmt->bindParam(":adr", $adr);
-		
-		$p0 = uniqid(mt_rand(), true); // 240 bit entropy each
-		$p1 = uniqid(mt_rand(), true); // http://stackoverflow.com/questions/4099333/how-to-generate-a-good-salt-is-my-function-secure-enough
-		$salt = $p0.$p1;
-
-		$h = $this->create_pass($pass, $salt);
-		$stmt->bindParam(":hash", $h);
-		$stmt->bindParam(":salt", $salt);
-		$stmt->execute();
-		//$stmt->fetch();
-		
-		session_start();
-		$_SESSION['user'] = $user;
-		$_SESSION['last_logon'] = date('y-M-d');
 		
 		return TRUE;
 	}
