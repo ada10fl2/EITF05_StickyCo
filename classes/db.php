@@ -101,7 +101,7 @@ class db {
 	
 	function cart_get($userid){
 		if(!empty($userid) && is_numeric($userid)){
-			$stmt = $this->conn->prepare('SELECT cart.ProductID, products.Image as Image,  products.price as price, count(*) as count , products.Title from cart INNER JOIN products ON cart.ProductID=products.ID WHERE cart.UserID=:uid GROUP BY cart.ProductID');
+			$stmt = $this->conn->prepare('SELECT cart.ProductID as ID, products.Image as Image,  products.price as price, count(*) as count , products.Title from cart INNER JOIN products ON cart.ProductID=products.ID WHERE cart.UserID=:uid GROUP BY cart.ProductID');
 			$stmt->bindParam(":uid", $userid);
 			$stmt->execute();
 			$results=$stmt->fetchAll(PDO::FETCH_ASSOC);

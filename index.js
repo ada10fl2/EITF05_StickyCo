@@ -34,7 +34,11 @@ $(document).ready(function() {
 				"<tr><td>{{if Image}}"+
 					"<img src='img/small/{{>Image}}' alt='{{>Title}}' width='40' >"+
 				"{{/if}}</td>"+
-				"<td>{{>count}}st</td> <td>{{>price}} kr/st<td>  <td>{{>prodtotal}} kr</td></tr>",
+				"<td>{{>count}}st</td> <td>{{>price}} kr/st<td>  <td>{{>prodtotal}} kr</td><td>"+
+				"<button type='button' class='btn btn-primary btn-xs addtocart' data-item='{{>ID}}'><span class='glyphicon glyphicon-plus'></span></button>"+
+				"</td><td>"+
+				"<button type='button' class='btn btn-primary btn-xs removefromcart' data-item='{{>ID}}'><span class='glyphicon glyphicon-minus'></span></button>"+
+				"</td></tr>",
 		showproduct: 
 			"<div class='modal-header'>"+
 				"<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>"+
@@ -65,10 +69,7 @@ $(document).ready(function() {
 	$("#products").html($.render.products(products));
 	updateCart();
 	
-	$(".addtocart").bind("click", function(event){
-		var id = $(this).attr("data-item");
-		addToCart(id);
-	});
+
 	
 	$(".showproduct").bind("click", function(){
 		var id = $(this).attr("data-item");
@@ -100,6 +101,15 @@ function updateCart(){
 	}
 	$("#cart_size").text(size);
 	$("#cart_price").text(price);
+
+	$(".addtocart").bind("click", function(event){
+		var id = $(this).attr("data-item");
+		addToCart(id);
+	});
+	$(".removefromcart").bind("click", function(event){
+		var id = $(this).attr("data-item");
+		removefromcart(id);
+	});
 }
 function clearCart(){
 	$.getJSON( "/cart.php?action=clear" , {})
@@ -108,6 +118,19 @@ function clearCart(){
 			console.log("Failed to clear cart");
 		} else {
 			console.log("Cleared cart: "+JSON.stringify(data));
+			cart = data;
+			updateCart();
+		}
+	});
+}
+
+function removefromcart(id){
+	$.getJSON( "/cart.php?action=remove&pid="+id , {})
+	.done(function(data){
+		if(data === false){
+			console.log("Failed to remove from cart cart");
+		} else {
+			console.log("Removed item from cart: "+JSON.stringify(data));
 			cart = data;
 			updateCart();
 		}
