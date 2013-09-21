@@ -28,4 +28,12 @@
 		$json = $db->cart_get($_SESSION['userid'], $pid);
 		echo json_encode($json);
 	}
+	if($action === "remove"){
+		$json = $db->remove_from_cart($_SESSION['userid'], $pid, FALSE);
+		echo json_encode($json);
+	}
+	if($action === "removeall"){
+		$json = $db->remove_from_cart($_SESSION['userid'], $pid, TRUE);
+		echo json_encode($json);
+	}
 ?>
