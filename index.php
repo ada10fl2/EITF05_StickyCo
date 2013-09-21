@@ -52,6 +52,9 @@ include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 					<button type="button" class="btn btn-default btn-sm" id="cart_clear">
 						<span class="glyphicon glyphicon-trash"></span> Clear cart
 					</button>
+					<button type="button" class="btn btn-default btn-sm" id="checkout">
+						<span class="glyphicon glyphicon-credit-card"></span> Checkout
+					</button>
 				</li>
 			</ul>
 		</div><!--/.well -->
