@@ -4,7 +4,7 @@ $(document).ready(function(){
 	var mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
 	var enoughRegex = new RegExp("(?=.{6,}).*", "g");
 	
-	$("#signup").submit(function(){
+	function validate(){
 		var bindError = function(id, filter, error){
 			var elm = $(id);
 			if(filter.test(elm.val())){
@@ -15,22 +15,20 @@ $(document).ready(function(){
 			}
 		}
 		
-		var filter_first = /^[\w ]{3,20}$/i;
-		var filter_last = /^[\w ]{3,20}$/i;
-		var filter_user = /^[a-z0-9]{8,}/i;
-		var filter_adr = /^[\w ]{4,20}$/i;
+		var filter_name = /^[\w ]{3,20}$/i;
+		var filter_adr =  /^[\w ]{3,20}$/i;
+		var filter_user = /^[\w]{4,20}$/i;
 		
-		bindError("#firstname", filter_first, "Must be 3-20 alphanumerical characters" );
-		bindError("#lastname", filter_last, "Must be 3-20 alphanumerical characters" );
-		bindError("#username", filter_user, "Must be 4-20 alphanumerical characters" );
-		bindError("#address", filter_adr, "Must be 4-20 characters" );
-		bindError("#password", enoughRegex, "Must be at least 6 characters long" );
+		bindError("#firstname", filter_name, "Must be 3-20 alphanumerical characters" );
+		bindError("#lastname", filter_name, "Must be 3-20 alphanumerical characters" );
+		bindError("#username", filter_user, "Must be at least 4 characters" );
+		bindError("#address", filter_adr, "Must be at least 3 characters" );
 		
-		return true;	
-	});
-		
-	$("#password").bind("keyup",function(){
-		var elm = $(this);
+		return true;
+	}
+	
+	function validate_pass(elm){
+		var elm = $("#password");
 		var p = elm.val();
 		var pch = p.split("");
 		
@@ -59,20 +57,35 @@ $(document).ready(function(){
 			(num.Symbols*bonus.Symbols) + bonus.Combo + bonus.FlatLower + bonus.FlatNumber;
 		
 		
-		if(score >= 100){
+		if(score >= 90){
 			elm.parent().find(".help-block").text("Password strength: Strong");
-			elm.parent().attr("class", "has-success");
-		} else if (score >= 75){
+			elm.parent().attr("class", "has-success bold");
+		} else if (score >= 65){
 			elm.parent().find(".help-block").text("Password strength: Medium");
-			elm.parent().attr("class", "has-warning");
-		} else if (score >= 50){
+			elm.parent().attr("class", "has-success");
+		} else if (score >= 40){
 			elm.parent().find(".help-block").text("Password strength: Weak");
-			elm.parent().attr("class", "has-error");
+			elm.parent().attr("class", "has-warning");
 		} else {
-			elm.parent().find(".help-block").text("Must be at least "+minPasswordLength+" characters long, with at least one digit and one uppercase");
+			elm.parent().find(".help-block").text("Password strength is too weak...");
 			elm.parent().attr("class", "has-error");
 		}
-	});
-		
+		return true;
+	};
 	
+	var fill = $("#firstname").val() + $("#lastname").val() + $("#username").val() + $("#password").val() + $("#address").val();
+	if(fill.length > 0 || was_post){
+		validate();
+		validate_pass();
+	}
+	
+	$("#signup").submit(function(){
+		return validate();	
+	});
+	$(".validate").bind("focusout",function(){
+		validate();
+	});
+	$("#password").bind("keyup",function(){
+		return validate_pass();
+	});
 });

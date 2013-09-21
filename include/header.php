@@ -28,7 +28,9 @@
 				var firstFolder = parts[3];
 				$(".nav a[href='/" + firstFolder + "']").parent().attr("class", "active");
 			});
-			<?= $script ?>
+			<?php
+				echo $script;
+			?>
 		</script>
 	</head>
 

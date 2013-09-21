@@ -59,9 +59,11 @@ footer {
 .addtocart {
 	margin-left: 10px;
 }
-
 .emptycart {
 	color:#888; 
 	font-size:smaller; 
 	margin: 10px;
+}
+.bold{
+	font-weight: bold;
 }

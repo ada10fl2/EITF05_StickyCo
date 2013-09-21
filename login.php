@@ -1,12 +1,14 @@
 <?php
 	$script = "";
-	
+	$success = FALSE;
 	$user = isset($_POST['username']) ? $_POST['username'] : "";
 	$pass = isset($_POST['password']) ? $_POST['password'] : "";
-	if(!empty($user) && !empty($pass)) {
+	$is_login = ($_SERVER['REQUEST_METHOD'] === "POST");
+	if($is_login === TRUE) {
 		require_once('/classes/db.php');
 		$db = new db();
 		if($db->verify_user($user, $pass) === TRUE){
+			$success = TRUE;
 			if(isset($_SESSION['cart']) && isset($_SESSION['userid'])){
 				$cart = $_SESSION['cart'];
 				$uid = $_SESSION['userid'];
@@ -20,9 +22,6 @@
 			?>
 			<script>document.location = "index.php";</script>
 			<?php
-			$script = "var failed = false;";
-		} else {
-			$script = "var failed = true;";
 		}
 	}
 	$scriptfile = "/login.js";
@@ -34,17 +33,20 @@
 			<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
 		</p>
 		<div class="jumbotron">			
-			<h1>Login</h1>
+			<h1>Log in</h1>
 			<form action="" method="POST" role="form" id="login">
-				<div class="form-group">
-					<label class="control-label" for="username">Username</label>
-					<input type="text" class="form-control" name="username" id="username" autofocus="true">
-				</div>
-				<div class="form-group">	
-					<label class="control-label" for="password">Password</label>
-					<input type="password" class="form-control" name="password" id="password">
-				</div>
 				
+				<div class="form-group <?= ($is_login && $success===FALSE) ? "has-error" : ""?>">
+					<label class="control-label" for="username">Username</label>
+					<input type="text" class="form-control input-lg" name="username" id="username" autofocus="true" value="<?= $user ?>">
+				</div>
+				<div class="form-group <?= ($is_login && $success===FALSE) ? "has-error" : ""?>">	
+					<label class="control-label" for="password">Password</label>
+					<input type="password" class="form-control input-lg" name="password" id="password" value="<?= $pass ?>">
+				</div>
+				<div id="login_error" class="text-danger">
+					<?php if($is_login && $success===FALSE) echo "<span class='glyphicon glyphicon-warning-sign'> </span> Invalid credentials, please try again..." ?>
+				</div>
 				<button class="btn btn-default btn-lg" type="submit">Log in</button>
 				<br/><br/>
 				Not registered yet? <a href="signup.php">Sign up here</a>

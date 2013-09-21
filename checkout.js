@@ -12,7 +12,7 @@ $(document).ready(function() {
 				"<button type='button' class='btn btn-primary btn-xs addtocart' data-item='{{>ID}}'><span class='glyphicon glyphicon-plus'></span></button>"+
 				"</td><td>"+
 				"<button type='button' class='btn btn-primary btn-xs removefromcart' data-item='{{>ID}}'><span class='glyphicon glyphicon-minus'></span></button>"+
-				"</td></tr>"
+			"</td></tr>"
 	});
 
 	updateCart();
@@ -62,8 +62,8 @@ $(document).ready(function() {
 			elm.parent().find(".help-block").text("Not a card");
 			elm.parent().attr("class", "has-error");
 		}
-});
-$("#order").submit(function(){
+	});
+	$("#order").submit(function(){
 		var bindError = function(id, filter, error){
 			var elm = $(id);
 			if(filter.test(elm.val())){

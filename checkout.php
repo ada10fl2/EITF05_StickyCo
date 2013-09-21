@@ -12,6 +12,7 @@
 	if(!empty($address) && !empty($first) && !empty($last)) {
 		$res = $db->create_order($_SESSION['userid'], $cart, $first, $last, $address);
 		if($res === TRUE) {
+			$db->cart_clear($_SESSION['userid']);
 			?>
 			<script>
 				document.location = "index.php";

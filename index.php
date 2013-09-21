@@ -24,7 +24,12 @@ include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 		</p>
 		<div class="jumbotron">
 			<p><img src="/img/logo.png" alt="StickyCo.se"></p>
-			<p>Checkout our awesome stickers!</p>
+			<p>Checkout our awesome webshop full of amazing stickers</p>
+			<blockquote>
+				<i>- We stick with our stickers</i><br />
+				<i>- If you stick to us, we stick to you!</i>
+			</blockquote>
+			
 		</div>
 		<div class="row" id="products">
 			<!--
@@ -37,10 +42,10 @@ include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 		</div><!--/row-->
 	</div><!--/span-->
 	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">Skate
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 		  <div class="modal-content">
-			Katt
+			<!-- Content -->
 		  </div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->

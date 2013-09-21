@@ -48,6 +48,7 @@ class db {
 		// Finally, destroy the session.
 		session_destroy();
 	}
+	
 	function create_pass($pass, $salt){
 		$cipher = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_CBC,'');
 		mcrypt_generic_init($cipher, CODE_SALT, IV);
@@ -55,10 +56,8 @@ class db {
 		$hash = hash('sha512', $crsalt);
 		return $hash;
 	}
+	
 	function verify_user($user, $pass){
-		if(empty($user) || empty($pass)){
-			throw new Exception("Empty user or pass");
-		}
 		$stmt = $this->conn->prepare('SELECT * FROM users WHERE Username=:user');
 		$stmt->bindParam(":user", $user);
 		$stmt->execute();
@@ -69,7 +68,6 @@ class db {
 			$real = $stmt->fetch(PDO::FETCH_ASSOC);
 			$salt = $real['Salt'];
 			
-			
 			$hash = $this->create_pass($pass, $salt);
 			if($hash === $real['Password']) {
 				//SUCCESS
@@ -77,7 +75,6 @@ class db {
 				$_SESSION['user'] = $user;
 				$_SESSION['userid'] = $real['ID'];
 				$_SESSION['last_logon'] = date('y-M-d');
-			
 				return TRUE;
 			} else {
 				return FALSE;
@@ -139,7 +136,15 @@ class db {
 		return TRUE;
 	}
 	function create_user($user, $pass, $first, $last, $adr){
-		$stmt = $this->conn->prepare('INSERT INTO users (Username, Password, FirstName, LastName, Salt, Address) VALUES (:user,:pass,:first,:last,:salt,:adr)');
+		$exist = $this->conn->prepare('SELECT * from users WHERE Username=:user');
+		$exist->bindParam(":user", $user);
+		$exist->execute();
+		
+		if(count($exist->fetchAll()) > 0){ //Prevent duplicate user
+			return FALSE;
+		}
+		
+		$stmt = $this->conn->prepare('INSERT INTO users (Username, Password, FirstName, LastName, Salt, Address) VALUES (:user,:hash,:first,:last,:salt,:adr)');
 		$stmt->bindParam(":user", $user);
 		$stmt->bindParam(":first", $first);
 		$stmt->bindParam(":last", $last);
