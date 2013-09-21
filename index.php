@@ -53,7 +53,7 @@ include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 						<span class="glyphicon glyphicon-trash"></span> Clear cart
 					</button>
 				</li>
-			</ul>	
+			</ul>
 		</div><!--/.well -->
 	</div><!--/span-->
 </div><!--/row-->

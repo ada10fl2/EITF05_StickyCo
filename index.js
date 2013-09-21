@@ -37,14 +37,6 @@ $(document).ready(function() {
 		addToCart(id);
 	});
 	
-	$(".showproduct").bind("click", function(event){
-		var id = $(this).attr("data-item");
-		$('#productLightbox').lightbox({
-			keyboard: true,
-			show: true
-		});
-	});
-	
 	$("#cart_clear").bind("click", function(){
 		clearCart();
 	});

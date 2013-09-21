@@ -17,7 +17,7 @@
 		<script src="/js/jquery.v1.10.2.min.js"></script>
 		<script src="/js/jsrender.min.js"></script>
 		<script src="/js/bootstrap.min.js"></script>
-		<script src="/js/bootstrap-lightbox.min.js"></script>
+		<script src="/js/bootstrap-lightbox.js"></script>
 		<script src="/js/bootstrap-tooltip.js"></script>
 		<script src="/js/bootstrap-thumb-lightbox-w-tooltip.js"></script>
 		<?php
