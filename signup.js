@@ -15,8 +15,8 @@ $(document).ready(function(){
 			}
 		}
 		
-		var filter_name = /^[\w ]{3,20}$/i;
-		var filter_adr =  /^[\w ]{3,20}$/i;
+		var filter_name = /^[\w ]{3,45}$/i;
+		var filter_adr =  /^[\w ]{3,200}$/i;
 		var filter_user = /^[\w]{4,20}$/i;
 		
 		bindError("#firstname", filter_name, "Must be 3-20 alphanumerical characters" );

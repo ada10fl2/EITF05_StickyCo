@@ -1,9 +1,9 @@
 <?php
 
-	function filter_name($v){    return preg_match('/^[\w ]{3,20}$/i',$v);}
-	function filter_address($v){ return preg_match('/^[\w ]{3,20}$/i',$v);}
-	function filter_username($v){ return preg_match('/^[\w]{4,20}$/i',$v);}
-	function filter_password($v){ return preg_match('/^[\w]{6,20}$/i',$v);}
+	function filter_name($v){    return preg_match('/^[\w ]{3,45}$/i',$v);}
+	function filter_address($v){ return preg_match('/^[\w ]{3,200}$/i',$v);}
+	function filter_username($v){ return preg_match('/^[\w]{4,}$/i',$v);}
+	function filter_password($v){ return preg_match('/^[\w]{6,}$/i',$v);}
 
 	function has_error($str){
 		return (preg_match('/^[_a-zA-Z0-9- ]+$/', $str) || $_SERVER['REQUEST_METHOD'] !== "POST" ? "" : "has-error");

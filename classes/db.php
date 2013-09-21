@@ -75,7 +75,7 @@ class db {
 			return FALSE;
 		} else {
 			$user_obj = $stmt->fetch(PDO::FETCH_ASSOC);
-			if(verify_pass($user_obj, $trypass)) {
+			if($this->verify_pass($user_obj, $trypass) === TRUE) {
 				//SUCCESS
 				session_start();
 				$_SESSION['user'] = $user;
