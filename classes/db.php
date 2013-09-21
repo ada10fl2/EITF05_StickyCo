@@ -151,5 +151,21 @@ class db {
 		$stmt->bindParam(":prc", $price);
 		$stmt->execute();
 	}
+
+	function remove_from_cart( $uid, $pid, $all){
+		if(!empty($pid) && is_numeric($pid) && !empty($uid) && is_numeric($uid)){
+			if($all == FALSE){
+				$stmt = $this->conn->prepare('DELETE from cart WHERE cart.UserID=:uid and cart.ProductID=:pid limit 1');
+			}else{
+				$stmt = $this->conn->prepare('DELETE from cart WHERE cart.UserID=:uid and cart.ProductID=:pid');
+			}
+			$stmt->bindParam(":uid", $uid);
+			$stmt->bindParam(":pid", $pid);
+			$stmt->execute();
+			return $this->cart_get($uid);			
+		}//Invalid uid
+		return FALSE;
+
+	}
 }
 ?>
