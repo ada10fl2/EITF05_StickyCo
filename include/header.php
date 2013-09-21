@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+<?php if(session_status() != 2) { session_start(); } ?>
 <!doctype html>
 <html>
 	<head>

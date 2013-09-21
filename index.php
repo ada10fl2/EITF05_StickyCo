@@ -1,13 +1,14 @@
 <?php
 require_once('/classes/db.php');
+session_start();
+
 $db = new db();
 $json = json_encode($db->get_products());
-$cart = json_encode(array());
+$cart = json_encode(isset($_SESSION['userid']) ? $db->cart_get($_SESSION['userid']) : array());
 $script = "var products = $json; var cart = $cart";
 $scriptfile = "/index.js";
 include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 ?>
-
 <div class="row row-offcanvas row-offcanvas-right">
 	<div class="col-xs-12 col-sm-9">
 		<p class="pull-right visible-xs">

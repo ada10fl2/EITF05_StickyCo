@@ -114,9 +114,7 @@ class db {
 				$results[$prod]['prodtotal'] = $itm['count'] * $itm['price'];
 				$prod += 1;
 			}
-			$results['count'] = $totalcount;
-			$results['totalprice'] = $totalprice;
-			return $results;
+			return array("content" => $results, "count" => $totalcount, "price" => $totalprice);
 		}//Invalid uid
 		return FALSE;
 	}

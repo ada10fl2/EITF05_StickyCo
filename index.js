@@ -24,10 +24,11 @@ $(document).ready(function() {
 				"</p>"+
 				"<a id='product{{>ID}}'></a>"+
 			"</div>",
-		cart : "<li><b>{{>Title}}</b><br />{{>count}} </li>"
+		cart : "<li><b>{{>Title}}</b><br />{{>count}} * {{>price}} SEK = {{>prodtotal}} SEK</li>"
 	});
 	
 	$("#products").html($.render.products(products));
+	updateCart();
 	
 	$(".addtocart").bind("click", function(event){
 		var id = $(this).attr("data-item");
@@ -40,7 +41,7 @@ $(document).ready(function() {
 });
 
 function updateCart(){
-	$("#cart").html($.render.cart(cart));
+	$("#cart").html($.render.cart(cart['content']));
 	$("#cart_size").text(cart['count']);
 	$("#cart_price").text(cart['price']);
 	
