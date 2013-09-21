@@ -4,7 +4,15 @@ session_start();
 
 $db = new db();
 $json = json_encode($db->get_products());
-$cart = json_encode(isset($_SESSION['userid']) ? $db->cart_get($_SESSION['userid']) : array());
+
+if(isset($_SESSION['userid'])){
+	$cart = json_encode($db->cart_get($_SESSION['userid']));
+} else {
+	if(!isset($_SESSION['cart'])){
+		$_SESSION['cart'] = $db->cart_get(null);
+	}
+	$cart = json_encode($_SESSION['cart']);
+}
 $script = "var products = $json; var cart = $cart";
 $scriptfile = "/index.js";
 include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";

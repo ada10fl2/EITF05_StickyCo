@@ -7,6 +7,16 @@
 		require_once('/classes/db.php');
 		$db = new db();
 		if($db->verify_user($user, $pass) === TRUE){
+			if(isset($_SESSION['cart']) && isset($_SESSION['userid'])){
+				$cart = $_SESSION['cart'];
+				$uid = $_SESSION['userid'];
+				$db->cart_clear($uid);
+				foreach($cart['content'] as $p){
+					for ($i = 0; $i < $p['count']; $i++){
+						$db->cart_add($uid, $p['ID']);
+					}
+				}
+			}
 			?>
 			<script>document.location = "index.php";</script>
 			<?php
@@ -28,7 +38,7 @@
 			<form action="" method="POST" role="form" id="login">
 				<div class="form-group">
 					<label class="control-label" for="username">Username</label>
-					<input type="text" class="form-control" name="username" id="username">
+					<input type="text" class="form-control" name="username" id="username" autofocus="true">
 				</div>
 				<div class="form-group">	
 					<label class="control-label" for="password">Password</label>

@@ -20,6 +20,16 @@ class db {
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
+	function get_product($pid){
+		if(is_numeric($pid)){	
+			$stmt = $this->conn->prepare('SELECT * FROM products WHERE ID=:id');
+			$stmt->bindParam(":id", $pid);
+			$stmt->execute();
+			return $stmt->fetch(PDO::FETCH_ASSOC);
+		}
+		return FALSE;
+	}
+	
 	function logout() {
 		// Initialize the session.
 		// If you are using session_name("something"), don't forget it now!
@@ -116,7 +126,7 @@ class db {
 			}
 			return array("content" => $results, "count" => $totalcount, "price" => $totalprice);
 		}//Invalid uid
-		return FALSE;
+		return array("content" => array(), "count" => 0, "price" => 0);
 	}
 	
 	function create_user($user, $pass, $first, $last, $adr){
