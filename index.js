@@ -88,6 +88,9 @@ $(document).ready(function() {
 	$("#cart_clear").bind("click", function(){
 		clearCart();
 	});
+	$("#checkout").bind("click", function(){
+		document.location = "/checkout.php";
+	});
 });
 
 function updateCart(){
