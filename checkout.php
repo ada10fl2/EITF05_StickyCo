@@ -77,8 +77,8 @@
 					<div class="form-group">
 						<label class="control-label" for="creditcard">Credit card number</label>
 						<input class="form-control" type="text" name="creditcard" id="creditcard">
-						<span class="help-block cardinfo">Your credit card number </span>
 						<span class="help-block cardimg"></span>
+						<span class="help-block cardinfo">Your credit card number </span>
 					</div>
 
 					

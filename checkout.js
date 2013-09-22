@@ -19,7 +19,7 @@ $(document).ready(function() {
 		clearCart();
 
 	});
-	$("#creditcard").bind("keyup",function(){
+	$("#creditcard").bind("change",function(){
 		var elm = $(this);
 		var parent = elm.parent();
 		var value = elm.val().replace(/\s+/g, '');
@@ -44,17 +44,12 @@ $(document).ready(function() {
 				clearImg(cardimg);
 				cardimg.addClass("visacard");
 			}
-			if(pch.length < 13 || pch.length > 16){
-				cardhelp.text("Invalid VISA");
+			if(pch.length < 13 || pch.length > 16 || !calculateCard(value)){
+				cardhelp.text("detected, but it is not valid");
 				parent.attr("class", "has-error");
 			} else {
-				if(calculateCard(value)) {
-					parent.attr("class", "has-success");
-					cardhelp.text("VISA card detected");
-				}else{
-					parent.attr("class", "has-error");
-					cardhelp.text("Error in Credit Card number");
-				}
+				parent.attr("class", "has-success");
+				cardhelp.text("detected, fully valid!");
 			}
 		}else if(pch[0] == 5 && pch[1]>0 && pch[1]<6) { //MASTER CARD
 			cardhelp.text("Master Card");
@@ -62,16 +57,12 @@ $(document).ready(function() {
 				clearImg(cardimg);
 				cardimg.addClass("mastercard");
 			}
-			if (pch.length < 16 || pch.length > 19){
-				cardhelp.text("Invalid Master Card");
+			if (pch.length < 16 || pch.length > 19 || !calculateCard(value)){
+				cardhelp.text("detected, but it is not valid");
 				parent.attr("class", "has-error");
 			} else {
-				if(calculateCard(value)) {
-					parent.attr("class", "has-success");
-				} else {
-					parent.attr("class", "has-error");
-					cardhelp.text("Error in Credit Card number");
-				}
+				parent.attr("class", "has-success");
+				cardhelp.text("detected, fully valid!");
 			}
 		} else {
 			cardhelp.text("Not a card");

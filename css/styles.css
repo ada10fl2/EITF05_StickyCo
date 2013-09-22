@@ -67,20 +67,27 @@ footer {
 .bold{
 	font-weight: bold;
 }
-.cardimg{
-	display: inline-block;
+.cardimg {
+	display: none;
 	margin: 0;
 	padding: 0;
+	width: 0px;
+	height: 0px;
 }
-
-.visa, .mastercard, .amex, .discover, .diners, .jcb {
+.cardinfo {
+	margin-top: 8px;
+}
+.visacard, .mastercard, .amexcard, .discovercard, .dinerscard, .jcbcard {
 	display: inline-block;
 	width: 50px;
 	height: 30px;
 	overflow: hidden;
 	text-align: left;
 	text-indent: -999px;
-	background: url(img/cardssprite.png) 0 0 no-repeat;
+	background: url(/img/cardssprite.png) 0 0 no-repeat;
+	float: left;
+	margin-top: 4px;
+	margin-right: 4px;
 }
 
 .mastercard { 
