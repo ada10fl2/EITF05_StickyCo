@@ -1,6 +1,7 @@
 <?php
 require_once('/classes/db.php');
 $scriptfile="";
+$script="";
 include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 ?>
 
