@@ -1,5 +1,4 @@
 <?php
-	$script = "";
 	$success = FALSE;
 	$user = isset($_POST['username']) ? $_POST['username'] : "";
 	$pass = isset($_POST['password']) ? $_POST['password'] : "";
@@ -12,10 +11,12 @@
 			if(isset($_SESSION['cart']) && isset($_SESSION['userid'])){
 				$cart = $_SESSION['cart'];
 				$uid = $_SESSION['userid'];
-				$db->cart_clear($uid);
-				foreach($cart['content'] as $p){
-					for ($i = 0; $i < $p['count']; $i++){
-						$db->cart_add($uid, $p['ID']);
+				if($cart['count'] !== 0) {
+					$db->cart_clear($uid);
+					foreach($cart['content'] as $p){
+						for ($i = 0; $i < $p['count']; $i++){
+							$db->cart_add($uid, $p['ID']);
+						}
 					}
 				}
 			}
@@ -24,7 +25,9 @@
 			<?php
 		}
 	}
+	$script = "";
 	$scriptfile = "/login.js";
+	$hijackingOverride = TRUE;
 	include $_SERVER["DOCUMENT_ROOT"]."/include/header.php";
 ?>
 <div class="row row-offcanvas row-offcanvas-right">

@@ -1,5 +1,19 @@
-<?php if(session_status() != 2) { session_start(); } ?>
-<!doctype html>
+<?php if(session_status() != 2) { session_start(); } ?><!doctype html>
+
+<?php
+	$secretToken = "mAOIyz5MPpm3RGg9fNrzHH6pKfWqa6LFls6FmlpeFPjuZitovdAOctGB6143JMa";
+	if (isset($_SESSION['HTTP_USER_AGENT'])) {
+		if ($_SESSION['HTTP_USER_AGENT'] != sha1($_SERVER['HTTP_USER_AGENT'].$secretToken) && 
+			!(isset($hijackingOverride) && $hijackingOverride === TRUE)){ 
+			require_once('/classes/db.php');
+			$db = new db();
+			$db->logout();
+			exit("<script>document.location='/login.php'</script>");
+		}
+	} else {
+		$_SESSION['HTTP_USER_AGENT'] = sha1($_SERVER['HTTP_USER_AGENT'].$secretToken);
+	}
+?>
 <html>
 	<head>
 		<title><?= (!isset($title) || trim($title) == false) ? "StickyCo" : $title ?></title>

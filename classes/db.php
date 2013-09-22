@@ -10,9 +10,11 @@ class db {
 		$host = "78.73.132.182";
 		$this->conn = new PDO("mysql:host=$host;dbname=$name", $user, $pass);
 		$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		define("CODE_SALT", "939760F3ACEE1D02785A4CE834A98E0301FE92E4E77F7C48E0A7206B");
-		define("PASSWORD_COST", 12 * pow(1.2, idate('y') - 13) ); 
-		//Hard to tell right now but it look fessible: http://www.wolframalpha.com/input/?i=12+*+pow%281.2%2C+x+-+13%29
+		if(!defined("CODE_SALT")) 
+			define("CODE_SALT", "939760F3ACEE1D02785A4CE834A98E0301FE92E4E77F7C48E0A7206B");
+		if(!defined("PASSWORD_COST")) 
+			define("PASSWORD_COST", 12 * pow(1.2, idate('y') - 13) ); 
+			//Hard to tell right now but it look fessible: http://www.wolframalpha.com/input/?i=12+*+pow%281.2%2C+x+-+13%29
 	}
 	
 	function get_products(){
@@ -34,7 +36,7 @@ class db {
 	function logout() {
 		// Initialize the session.
 		// If you are using session_name("something"), don't forget it now!
-		session_start();
+		if(session_status() != 2) { session_start(); }
 		// Unset all of the session variables.
 		$_SESSION = array();
 		// If it's desired to kill the session, also delete the session cookie.
@@ -78,7 +80,9 @@ class db {
 			$user_obj = $stmt->fetch(PDO::FETCH_ASSOC);
 			if($this->verify_pass($user_obj, $trypass) === TRUE) {
 				//SUCCESS
-				session_start();
+				if(session_status() != 2) { 
+					session_start(); 
+				}
 				$_SESSION['user'] = $user;
 				$_SESSION['userid'] = $user_obj['ID'];
 				$_SESSION['last_logon'] = date('y-M-d');
@@ -109,7 +113,9 @@ class db {
 		$stmt->execute();
 		//$stmt->fetch();
 		
-		session_start();
+		if(session_status() != 2) { 
+			session_start(); 
+		}
 		$_SESSION['user'] = $user;
 		$_SESSION['last_logon'] = date('y-M-d');
 		
@@ -157,16 +163,25 @@ class db {
 		}//Invalid uid
 		return array("content" => array(), "count" => 0, "price" => 0);
 	}
-	function create_order($uid, $order,$first, $last, $adr){
-		$stmt = $this->conn->prepare('INSERT INTO Orders (UserID, OrderContent, Firstname, Lastname, Address) VALUES (:user,:order,:first,:last,:adr)');
-		$stmt->bindParam(":user", $uid);
-		$stmt->bindParam(":first", $first);
-		$stmt->bindParam(":last", $last);
-		$stmt->bindParam(":adr", $adr);
-		$stmt->bindParam(":order", $order);
-		$stmt->execute();
+	function create_order($uid, $order,$first, $last, $adr, $cc){
 		
-		return TRUE;
+		function isValidCC($cc){
+			//Contact service provider and check card and do payment.
+			return TRUE; 
+		}
+		
+		if(isValidCC($cc) === TRUE){
+			$stmt = $this->conn->prepare('INSERT INTO Orders (UserID, OrderContent, Firstname, Lastname, Address) VALUES (:user,:order,:first,:last,:adr)');
+			$stmt->bindParam(":user", $uid);
+			$stmt->bindParam(":first", $first);
+			$stmt->bindParam(":last", $last);
+			$stmt->bindParam(":adr", $adr);
+			$stmt->bindParam(":order", $order);
+			$stmt->execute();			
+			return TRUE;	
+		} else {
+			return FALSE;
+		}
 	}
 
 	function create_prod($img, $title, $price, $desc ){

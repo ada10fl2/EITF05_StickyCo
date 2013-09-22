@@ -1,33 +1,36 @@
 <?php
+	
+	$firstname = isset($_POST['firstname']) ? $_POST['firstname'] : "";
+	$lastname = isset($_POST['lastname']) ? $_POST['lastname'] : "";
 	$address = isset($_POST['address']) ? $_POST['address'] : "";
-	$first = isset($_POST['firstname']) ? $_POST['firstname'] : "";
-	$last = isset($_POST['lastname']) ? $_POST['lastname'] : "";
-		require_once('/classes/db.php');
-			session_start();
+	$creditcard = isset($_POST['creditcard']) ? $_POST['creditcard'] : "";
+	
+	require_once('/classes/db.php');
 	$db = new db();
-	$json = json_encode($db->get_products());
-	$user = $db->get_user($_SESSION['userid']);
-	$cart = json_encode(isset($_SESSION['userid']) ? $db->cart_get($_SESSION['userid']) : array());
-
-	if(!empty($address) && !empty($first) && !empty($last)) {
-		$res = $db->create_order($_SESSION['userid'], $cart, $first, $last, $address);
-		if($res === TRUE) {
-			$db->cart_clear($_SESSION['userid']);
-			?>
-			<script>
-				document.location = "index.php";
-			</script>
-			<?php
-		} else {
-			exit("Creation failed");
-		}
-	} else {
-		$script = "var products = $json; var cart = $cart";
-		$scriptfile = "/checkout.js";
-		$json = json_encode($db->get_products());
-		include $_SERVER["DOCUMENT_ROOT"]."/include/header.php";
+	$is_post = ($_SERVER['REQUEST_METHOD'] === "POST");
+	
+	
+	session_start();
+	if(!isset($_SESSION['userid'])){ //User not logged in
+		exit("<script>document.location='login.php'; //User not logged in</script>");
 	}
 	
+	$uid = $_SESSION['userid'];
+	$user = $db->get_user($uid);
+	if($is_post) {
+		$res = $db->create_order($uid, $cart, $firstname, $lastname, $address, $creditcard);
+		if($res === TRUE) {
+			$db->cart_clear($uid);
+			exit("<script>document.location='index.php';</script>");
+		} else {
+			exit("Creation failed, should never happen a normal user");
+		}
+	} else {
+		$cart = json_encode(isset($_SESSION['userid']) ? $db->cart_get($uid) : array());
+		$script = "var cart = $cart";
+		$scriptfile = "/checkout.js";
+		include $_SERVER["DOCUMENT_ROOT"]."/include/header.php";
+	}
 ?>
 <div class="row row-offcanvas row-offcanvas-right">
 	<div class="col-xs-12 col-sm-9">
