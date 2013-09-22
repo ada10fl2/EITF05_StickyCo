@@ -158,7 +158,7 @@ class db {
 		return array("content" => array(), "count" => 0, "price" => 0);
 	}
 	function create_order($uid, $order,$first, $last, $adr){
-		$stmt = $this->conn->prepare('INSERT INTO Orders (UserID, OrderContent, Firstname, Lastname, Adress) VALUES (:user,:order,:first,:last,:adr)');
+		$stmt = $this->conn->prepare('INSERT INTO Orders (UserID, OrderContent, Firstname, Lastname, Address) VALUES (:user,:order,:first,:last,:adr)');
 		$stmt->bindParam(":user", $uid);
 		$stmt->bindParam(":first", $first);
 		$stmt->bindParam(":last", $last);

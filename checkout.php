@@ -75,9 +75,10 @@
 						<span class="help-block">Your home address</span>
 					</div>
 					<div class="form-group">
-						<label class="control-label" for="password">Credit card number</label>
+						<label class="control-label" for="creditcard">Credit card number</label>
 						<input class="form-control" type="text" name="creditcard" id="creditcard">
-						<span class="help-block">Your credit card number</span>
+						<span class="help-block cardinfo">Your credit card number </span>
+						<span class="help-block cardimg"></span>
 					</div>
 
 					

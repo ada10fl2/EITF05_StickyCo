@@ -67,3 +67,22 @@ footer {
 .bold{
 	font-weight: bold;
 }
+.cardimg{
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+}
+
+.visa, .mastercard, .amex, .discover, .diners, .jcb {
+	display: inline-block;
+	width: 50px;
+	height: 30px;
+	overflow: hidden;
+	text-align: left;
+	text-indent: -999px;
+	background: url(img/cardssprite.png) 0 0 no-repeat;
+}
+
+.mastercard { 
+	background-position: -55px 0;
+}
