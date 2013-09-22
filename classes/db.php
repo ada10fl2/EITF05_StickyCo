@@ -5,7 +5,7 @@ class db {
 	
 	function __construct() {
 		$user = "root";
-		$pass = "katt";
+		$pass = "I{BawnWW.@\Nz2U#uwX+{V&`eTVVp4k0N/x`RE,8^z(5ut+'Nob2a1!C;JbFe]_";
 		$name = "webshop";
 		$host = "78.73.132.182";
 		$this->conn = new PDO("mysql:host=$host;dbname=$name", $user, $pass);
