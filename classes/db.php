@@ -34,13 +34,10 @@ class db {
 	}
 	
 	function logout() {
-		// Initialize the session.
-		// If you are using session_name("something"), don't forget it now!
 		if(session_status() != 2) { session_start(); }
-		// Unset all of the session variables.
+		
 		$_SESSION = array();
 		// If it's desired to kill the session, also delete the session cookie.
-		// Note: This will destroy the session, and not just the session data!
 		if (ini_get("session.use_cookies")) {
 			$params = session_get_cookie_params();
 			setcookie(session_name(), '', time() - 42000,
@@ -48,6 +45,7 @@ class db {
 				$params["secure"], $params["httponly"]
 			);
 		}
+		
 		// Finally, destroy the session.
 		session_destroy();
 	}
@@ -85,7 +83,7 @@ class db {
 				}
 				$_SESSION['user'] = $user;
 				$_SESSION['userid'] = $user_obj['ID'];
-				$_SESSION['last_logon'] = date('y-M-d');
+				$_SESSION['time'] = date('c');
 				return TRUE;
 			} else {
 				return FALSE;
@@ -163,25 +161,16 @@ class db {
 		}//Invalid uid
 		return array("content" => array(), "count" => 0, "price" => 0);
 	}
-	function create_order($uid, $order,$first, $last, $adr, $cc){
-		
-		function isValidCC($cc){
-			//Contact service provider and check card and do payment.
-			return TRUE; 
-		}
-		
-		if(isValidCC($cc) === TRUE){
-			$stmt = $this->conn->prepare('INSERT INTO Orders (UserID, OrderContent, Firstname, Lastname, Address) VALUES (:user,:order,:first,:last,:adr)');
-			$stmt->bindParam(":user", $uid);
-			$stmt->bindParam(":first", $first);
-			$stmt->bindParam(":last", $last);
-			$stmt->bindParam(":adr", $adr);
-			$stmt->bindParam(":order", $order);
-			$stmt->execute();			
-			return TRUE;	
-		} else {
-			return FALSE;
-		}
+	
+	function create_order($uid, $order, $first, $last, $adr){
+		$stmt = $this->conn->prepare('INSERT INTO Orders (UserID, OrderContent, Firstname, Lastname, Address) VALUES (:user,:order,:first,:last,:adr)');
+		$stmt->bindParam(":user", $uid);
+		$stmt->bindParam(":first", $first);
+		$stmt->bindParam(":last", $last);
+		$stmt->bindParam(":adr", $adr);
+		$stmt->bindParam(":order", $order);
+		$stmt->execute();
+		return TRUE;
 	}
 
 	function create_prod($img, $title, $price, $desc ){
@@ -191,10 +180,13 @@ class db {
 		$stmt->bindParam(":des", $desc);
 		$stmt->bindParam(":prc", $price);
 		$stmt->execute();
+		return TRUE;
 	}
 
 	function remove_from_cart( $uid, $pid, $all){
-		if(!empty($pid) && is_numeric($pid) && !empty($uid) && is_numeric($uid)){
+		if (!empty($pid) && is_numeric($pid) && 
+			!empty($uid) && is_numeric($uid)){
+			
 			if($all == FALSE){
 				$stmt = $this->conn->prepare('DELETE from cart WHERE cart.UserID=:uid and cart.ProductID=:pid limit 1');
 			}else{
@@ -204,16 +196,22 @@ class db {
 			$stmt->bindParam(":pid", $pid);
 			$stmt->execute();
 			return $this->cart_get($uid);			
-		}//Invalid uid
+		}
+		
+		//Invalid uid or pid
 		return FALSE;
 
 	}
 
 	function get_user($uid){
-		$stmt = $this->conn->prepare('SELECT * FROM users WHERE ID=:uid');
-		$stmt->bindParam(":uid", $uid);
-		$stmt->execute();
-		return $stmt->fetch(PDO::FETCH_ASSOC);
+		if(!empty($uid) && is_numeric($uid)){
+			$stmt = $this->conn->prepare('SELECT * FROM users WHERE ID=:uid');
+			$stmt->bindParam(":uid", $uid);
+			$stmt->execute();
+			return $stmt->fetch(PDO::FETCH_ASSOC);
+		}
+		//Invalid uid
+		return FALSE;
 	}
 }
 ?>

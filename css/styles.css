@@ -93,3 +93,18 @@ footer {
 .mastercard { 
 	background-position: -55px 0;
 }
+
+.digi2 {
+	width: 46px;
+	float: left;
+}
+.digi3{
+	width: 52px;
+}
+
+.sldiv{
+	font-size: 20pt;
+}
+.greentick{
+	margin: 30px;
+}

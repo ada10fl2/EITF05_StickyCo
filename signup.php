@@ -1,30 +1,18 @@
 <?php
+	require_once('/classes/validate.php');
 
-	function filter_name($v){    return preg_match('/^[\w ]{3,45}$/i',$v);}
-	function filter_address($v){ return preg_match('/^[\w ]{3,200}$/i',$v);}
-	function filter_username($v){ return preg_match('/^[\w]{4,}$/i',$v);}
-	function filter_password($v){ return preg_match('/^[\w]{6,}$/i',$v);}
-
-	function has_error($str){
-		return (preg_match('/^[_a-zA-Z0-9- ]+$/', $str) || $_SERVER['REQUEST_METHOD'] !== "POST" ? "" : "has-error");
-	}
-	function has_error_pass($str){
-		return (preg_match('/^.{8,}$/', $str) || $_SERVER['REQUEST_METHOD'] !== "POST" ? "" : "has-error");
-	}
+	$username = Validate::ifset($_POST['username']);
+	$password = Validate::ifset($_POST['password']);
+	$address = Validate::ifset($_POST['address']);
+	$firstname = Validate::ifset($_POST['firstname']);
+	$lastname = Validate::ifset($_POST['lastname']);
 	
-	$username = isset($_POST['username']) ? $_POST['username'] : "";
-	$password = isset($_POST['password']) ? $_POST['password'] : "";
-	$address = isset($_POST['address']) ? $_POST['address'] : "";
-	$firstname = isset($_POST['firstname']) ? $_POST['firstname'] : "";
-	$lastname = isset($_POST['lastname']) ? $_POST['lastname'] : "";
+	$is_post = Validate::is_POST($_SERVER);
 	
-	$is_post = ($_SERVER['REQUEST_METHOD'] === "POST");
 	$is_valid = 
-		filter_name($firstname) &&
-		filter_name($lastname) &&
-		filter_address($address) &&
-		filter_username($username) &&
-		filter_password($password);
+		Validate::is_name($firstname) && Validate::is_name($lastname) &&
+		Validate::is_address($address) && Validate::is_username($username) &&
+		Validate::is_password($password);
 	
 	$success = FALSE;
 	if($is_post && $is_valid) {
@@ -33,12 +21,13 @@
 		if($db->create_user($username, $password, $firstname, $lastname, $address)) {
 			$success = TRUE;
 			?>
-			<script>
-				document.location = "index.php";
-			</script>
+			<script>document.location = "index.php";</script>
 			<?php
 		}
 	}
+	
+	$user_already_exist = ($is_post && $is_valid && !$success);
+	
 	$script = "var was_post = ".json_encode($is_post).";";
 	$scriptfile = "/signup.js?v=1";
 	include $_SERVER["DOCUMENT_ROOT"]."/include/header.php";
@@ -54,7 +43,7 @@
 				Please fill in your information
 			</p>
 		</div>
-		<?php if($is_post && $is_valid && !$success) { //user aleady exist in db ?>
+		<?php if($user_already_exist) { //user aleady exist in db ?>
 		<div class="well">	
 			<ul>
 			<li class="text-danger">

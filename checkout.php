@@ -1,33 +1,43 @@
 <?php
-	
-	$firstname = isset($_POST['firstname']) ? $_POST['firstname'] : "";
-	$lastname = isset($_POST['lastname']) ? $_POST['lastname'] : "";
-	$address = isset($_POST['address']) ? $_POST['address'] : "";
-	$creditcard = isset($_POST['creditcard']) ? $_POST['creditcard'] : "";
-	
 	require_once('/classes/db.php');
+	require_once('/classes/validate.php');
+	
+	$cc_nr = Validate::ifset($_POST['cc_nr']);
+	$cc_mm = Validate::ifset($_POST['cc_mm']);
+	$cc_yy = Validate::ifset($_POST['cc_yy']);
+	$cc_cv = Validate::ifset($_POST['cc_cv']);
+	$firstname = Validate::ifset($_POST['firstname']);
+	$lastname = Validate::ifset($_POST['lastname']);
+	$address = Validate::ifset($_POST['address']);
+	
+	
 	$db = new db();
-	$is_post = ($_SERVER['REQUEST_METHOD'] === "POST");
+	$is_post = Validate::is_POST($_SERVER);
 	
+	Validate::noUserRedirect("login.php"); //send unauth away;
 	
-	session_start();
-	if(!isset($_SESSION['userid'])){ //User not logged in
-		exit("<script>document.location='login.php'; //User not logged in</script>");
-	}
+	$is_valid = 
+		Validate::is_name($firstname) &&
+		Validate::is_name($lastname) &&
+		Validate::is_address($address) && 
+		Validate::is_creditcard($cc_nr,$cc_cv,$cc_mm,$cc_yy);
+
+	$uid = isset($_SESSION['userid']) ? $_SESSION['userid'] : 0;
+	$user = isset($_SESSION['userid']) ? $db->get_user($uid) : array();
+	$cart = isset($_SESSION['userid']) ? json_encode($db->cart_get($uid)) : json_encode(array());
 	
-	$uid = $_SESSION['userid'];
-	$user = $db->get_user($uid);
-	if($is_post) {
-		$res = $db->create_order($uid, $cart, $firstname, $lastname, $address, $creditcard);
+	if($is_post && $is_valid) {	
+		$res = $db->create_order($uid, $cart, $firstname, $lastname, $address);
 		if($res === TRUE) {
 			$db->cart_clear($uid);
-			exit("<script>document.location='index.php';</script>");
+			exit("<script>document.location='success.php';</script>");
 		} else {
 			exit("Creation failed, should never happen a normal user");
 		}
 	} else {
-		$cart = json_encode(isset($_SESSION['userid']) ? $db->cart_get($uid) : array());
-		$script = "var cart = $cart";
+		$post = $is_post ? "true" : "false";
+		$valid = $is_valid ? "true" : "false";
+		$script = "var cart = $cart; var wasPosted = $post; var wasValid = $valid;";
 		$scriptfile = "/checkout.js";
 		include $_SERVER["DOCUMENT_ROOT"]."/include/header.php";
 	}
@@ -47,7 +57,7 @@
 
 		<div class="well">	
 			<p>
-				<h3>Shopingcart <span class="badge pull-right" id="cart_size">0</span></h3>
+				<legend>Shopingcart <span class="badge pull-right" id="cart_size">0</span></legend>
 			</p>
 				<table  id="cart" width="100%">
 				</table>
@@ -59,36 +69,55 @@
 					</button>
 				</li>
 			</ul>
-			</div>
-				<div class="well">	
-				<form action="" method="POST" role="form" id="order">
-					<div class="form-group">
-						<label class="control-label" for="firstname">Firstname</label>
-						<input class="form-control" type="text" name="firstname" id="firstname" value="<?= $user["FirstName"] ?>">
-						<span class="help-block">The very first part of your full name</span>
-					</div>
-					<div class="form-group">
-						<label class="control-label" for="lastname">Lastname</label>
-						<input class="form-control" type="text" name="lastname" id="lastname" value="<?= $user["LastName"] ?>">
-						<span class="help-block">The last part of your full name</span>
-					</div>
-					<div class="form-group">
-						<label class="control-label" for="address">Home Address</label>
-						<input class="form-control" type="text" name="address" id="address" value="<?= $user["Address"] ?>">	
-						<span class="help-block">Your home address</span>
-					</div>
-					<div class="form-group">
-						<label class="control-label" for="creditcard">Credit card number</label>
-						<input class="form-control" type="text" name="creditcard" id="creditcard">
-						<span class="help-block cardimg"></span>
-						<span class="help-block cardinfo">Your credit card number </span>
-					</div>
-
-					
-					<button class="btn btn-default btn-lg" type="submit">Order</button>
-				</form>
-			</div>
+		</div>
 		
+		<div class="well">	
+			<form method="POST" role="form" id="order" class="form-horizontal">
+				<legend>Payment</legend>
+				
+				<div class="control-group">
+					<label class="control-label" for="firstname">Firstname</label>
+					<input class="form-control" type="text" name="firstname" id="firstname" value="<?= $user["FirstName"] ?>" maxlength="45">
+					<span class="help-block">The very first part of your full name</span>
+				</div>
+			
+				<div class="control-group">
+					<label class="control-label" for="lastname">Lastname</label>
+					<input class="form-control" type="text" name="lastname" id="lastname" value="<?= $user["LastName"] ?>" maxlength="45">
+					<span class="help-block">The last part of your full name</span>
+				</div>
+			
+				<div class="control-group">
+					<label class="control-label" for="address">Home Address</label>
+					<input class="form-control" type="text" name="address" id="address" value="<?= $user["Address"] ?>" maxlength="200">	
+					<span class="help-block">Your home address</span>
+				</div>
+			
+				<div class="control-group">
+					<label class="control-label" for="address">Credit card number</label>
+					<input class="form-control" type="text" name="cc_nr" id="cc_nr" placeholder="•••• •••• •••• ••••" value="<?= $cc_nr ?>" maxlength="19">
+					<span class="help-block cardimg"></span>
+					<span class="help-block cardinfo">Your credit card number </span>
+				</div>
+			
+				<div class="control-group">
+					<label for="cc_mm">Month</label> / <label for="cc_yy">Year</label><br>
+					<input class="form-control pull-left digi2" type="text" name="cc_mm" id="cc_mm" placeholder="<?= date('m'); ?>" value="<?= $cc_mm ?>" maxlength="2">
+					<span class="pull-left sldiv">/</span> 
+					<input class="form-control pull-left digi2" type="text" name="cc_yy" id="cc_yy" placeholder="<?= date('y'); ?>" value="<?= $cc_yy ?>" maxlength="2">
+					<div class="clearfix"></div>
+					<span class="help-block">'Valid until' of your card</span>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="cc_cv">Credit card verification</label>
+					<input class="form-control digi3" type="text" name="cc_cv" id="cc_cv" placeholder="•••" value="<?= $cc_cv ?>" maxlength="3">
+					<span class="help-block cardinfo">Your CVV2, three digits on the back</span>
+				</div>
+				
+				<button class="btn btn-default btn-lg" type="submit">Order</button>
+			</form>
+		</div>
 	</div><!--/span-->
 </div><!--/row-->
 

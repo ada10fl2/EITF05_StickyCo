@@ -1,4 +1,5 @@
-var CART = [];
+var CART = []; // ensure visible
+var wasPosted = false; // ensure visible
 
 $(document).ready(function() {	
 	$.templates({
@@ -17,15 +18,22 @@ $(document).ready(function() {
 	updateCart();
 	$("#cart_clear").bind("click", function(){
 		clearCart();
-
 	});
-	$("#creditcard").bind("change",function(){
-		var elm = $(this);
+	
+	var validateCard = function() {
+		var elm = $("#cc_nr");
 		var parent = elm.parent();
-		var value = elm.val().replace(/\s+/g, '');
-		var pch = value.split("");
+		var org = elm.val();		
+		var trim = org.trim();
+		var value = org.replace(/\s+/g, '');
 		
-		elm.val(value); // Update after repalceAll
+		var groups = trim.match(/\d\d\d\d/g);
+		var newVal = (groups && value.length % 4 === 0) ? groups.join(" ") : org;
+		if(value.length % 4 == 0 && value.length < 16) newVal += " ";
+		
+		elm.val(newVal); //Update after trim and rouping
+		
+		var pch = value.split("");
 		
 		var cardhelp = parent.find(".cardinfo");
 		var cardimg = parent.find(".cardimg");
@@ -34,9 +42,7 @@ $(document).ready(function() {
 		var isShowingVisa = cardimg.hasClass('visacard');
 		
 		function clearImg(span){
-			span
-				.removeClass("mastercard")
-				.removeClass("visacard");
+			span.removeClass("mastercard").removeClass("visacard");
 		}
 		
 		if(pch[0] == 4){ //VISA
@@ -44,12 +50,13 @@ $(document).ready(function() {
 				clearImg(cardimg);
 				cardimg.addClass("visacard");
 			}
-			if(pch.length < 13 || pch.length > 16 || !calculateCard(value)){
+			if(pch.length < 13 || pch.length > 16 || !validateLuhn(value)){
 				cardhelp.text("detected, but it is not valid");
 				parent.attr("class", "has-error");
 			} else {
 				parent.attr("class", "has-success");
 				cardhelp.text("detected, fully valid!");
+				return true;
 			}
 		}else if(pch[0] == 5 && pch[1]>0 && pch[1]<6) { //MASTER CARD
 			cardhelp.text("Master Card");
@@ -57,64 +64,112 @@ $(document).ready(function() {
 				clearImg(cardimg);
 				cardimg.addClass("mastercard");
 			}
-			if (pch.length < 16 || pch.length > 19 || !calculateCard(value)){
+			if (pch.length < 16 || pch.length > 19 || !validateLuhn(value)){
 				cardhelp.text("detected, but it is not valid");
 				parent.attr("class", "has-error");
 			} else {
 				parent.attr("class", "has-success");
 				cardhelp.text("detected, fully valid!");
+				return true;
 			}
 		} else {
 			cardhelp.text("Not a card");
 			parent.attr("class", "has-error");
 		}
+		return false;
+	};
+	
+	function wlkey(code){
+		return code !== 8 && code !==9;
+	}
+	
+	function ensureValidCard(yyid,filter_yy,mmid,filter_mm) {
+		var mmval = $(mmid).val();
+		var yyval = $(yyid).val();
+		
+		if( mmval.length === 0 ) return false;
+		if( yyval.length === 0 ) return false;
+		
+		var valid = false; 
+		var msg = "Enter a valid year/month";
+		if(filter_yy.test(yyval) && filter_mm.test(mmval)){		
+			var yy = parseInt(yyval);
+			var mm = parseInt(mmval);
+			var par = $(yyid).parent();
+			var curMM = new Date().getMonth() + 1; //[0-11] + 1
+			var curYY = new Date().getFullYear() - 2000;
+			if(curYY < yy || curYY === yy && curMM <= mm){
+				valid = true;	
+			} else {
+				msg = "Your card has expired";
+			}			
+		}
+		
+		var par = $(yyid).parent();
+		if(valid === true) {
+			par.attr("class","has-success");
+		} else {
+			par.attr("class","has-error");
+			par.find(".help-block").text(msg);
+		}
+		
+		return valid;
+	}
+	
+	var timer = undefined;
+	
+	$("#cc_nr").bind("keyup", function(){
+		var keycode = (event.keyCode ? event.keyCode : event.which);
+		if(keycode < 48 || keycode > 57) return true; 
+		if(timer) clearTimeout(timer);
+		if($(this).val().split("").length >= 12){
+			timer = setTimeout(validateCard, 10);
+		} else {
+			timer = setTimeout(validateCard, 2000);
+		}
 	});
 	
-	$("#order").submit(function(){
+	function validate(){
 		var bindError = function(id, filter, error){
 			var elm = $(id);
 			if(filter.test(elm.val())){
-				elm.parent().attr("class","has-success");
+				elm.removeClass("has-error");
+				if(elm.parent().find(".has-error").length === 0) {
+					elm.parent().attr("class","has-success");
+				}
+				return true;
 			} else {
+				elm.addClass("has-error");
 				elm.parent().attr("class","has-error");
 				elm.parent().find(".help-block").text(error);
+				return false;
 			}
-		}
+		};
+		var filter_name = /^[\w ]{3,45}$/i;
+		var filter_adr = /^[\w \-,\.#()]{4,200}$/i;
+		var filter_cvv = /^[\d]{3}$/;
+		var filter_yy = /^[\d]{2}$/;
+		var filter_mm = /^([0][1-9])|([1][0-2])$/;
 		
-		var filter_first = /^[\w ]{3,20}$/i;
-		var filter_last = /^[\w ]{3,20}$/i;
-		var filter_adr = /^[\w ]{4,20}$/i;
-		
-		bindError("#firstname", filter_first, "Must be 3-20 alphanumerical characters" );
-		bindError("#lastname", filter_last, "Must be 3-20 alphanumerical characters" );
-		bindError("#address", filter_adr, "Must be 4-20 characters" );
-		
-		return true;	
-	});
+		var valid = validateCard() &
+			ensureValidCard("#cc_yy", filter_yy, "#cc_mm", filter_mm, "Your card is not valid") &
+			bindError("#firstname", filter_name, "Must be 3-45 alphanumerical characters" ) &
+			bindError("#lastname", filter_name, "Must be 3-45 alphanumerical characters" ) &
+			bindError("#cc_cv", filter_cvv, "Must be 3 digits" ) & 
+			bindError("#address", filter_adr, "Must be 4-200 characters (A-Z,a-z,0-9,' ','-','.',',','#','(',')')" );	
+			
+		return valid === 1;
+	};
 	
+	$("#order").submit(validate);
+	
+	if(wasPosted) validate();
 });
 
-function calculateCard(Luhn) {
-	var sum = 0;
-	for (i=0; i<Luhn.length; i++ ) {
-		sum += parseInt(Luhn.substring(i,i+1));
-	}
-	
-	var delta = new Array (0, 1, 2, 3, 4, -4, -3, -2, -1, 0);
-	for (i=Luhn.length-1; i>=0; i-=2 ) {		
-		var deltaIndex = parseInt(Luhn.substring(i, i + 1));
-		var deltaValue = delta[deltaIndex];	
-		sum += deltaValue;
-	}	
-
-	var mod10 = sum % 10;
-	mod10 = 10 - mod10;	
-	
-	if (mod10 == 10) {		
-		mod10 = 0;
-	}
-	
-	return mod10;
+function validateLuhn (cc) {
+	return !/^\d+$/.test(cc) || (cc.split('').reduce(function(sum, d, n){ 
+            return sum + parseInt((n%2)? [0,2,4,6,8,1,3,5,7,9][d]: d); 
+	}, 0)) % 10 == 0;
 }
 
 function updateCart(){
