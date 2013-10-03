@@ -1,5 +1,5 @@
 <?php 
-	require_once '../classes/validate.php'; 
+	require_once '/classes/validate.php'; 
 	Validate::isLoggedIn(isset($hijackingOverride) ? $hijackingOverride : FALSE); 	
 ?>
 <!doctype html>
