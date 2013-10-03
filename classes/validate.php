@@ -1,12 +1,52 @@
 <?php 
 	class Validate {
+		const TOKEN1 = "mAOIyz5MPpm3RGg9fNrzHH6pKfWqa6LF";
+		const TOKEN2 = "ls6FmlpeFPjuZitovdAOctGB6143JMa";
 		
-		public static function noUserRedirect($redirect) {
-			session_start();
-			if(!isset($_SESSION['userid'])){ //User not logged in
-				exit("<script>document.location='$redirect'; //User not logged in </script>");
+		public static function isLoggedIn($forceNewLogin) {
+			if(session_status() != 2) { 
+				session_start();
 			}
+		
+			function logout(){
+				$_SESSION = array();
+				// If it's desired to kill the session, also delete the session cookie.
+				if (ini_get("session.use_cookies")) {
+					$params = session_get_cookie_params();
+					setcookie(session_name(), '', time() - 42000,
+						$params["path"], $params["domain"],
+						$params["secure"], $params["httponly"]
+					);
+				}
+				session_destroy();
+				exit("<script>document.location='login.php'; //User not logged in </script>");
+			}
+			
+			if(!isset($_SESSION['server_generated'])){
+				session_regenerate_id();
+				$_SESSION['server_generated'] = TRUE;
+			}
+			
+			$uid = self::ifset($_SESSION['userid']);
+			$hash = sha1($_SERVER['HTTP_USER_AGENT'].TOKEN1.$_SERVER['REMOTE_ADDR'].TOKEN2.$uid);
+			
+			if (!isset($_SESSION['HTTP_USER_AGENT'])) {
+				$_SESSION['HTTP_USER_AGENT'] = $hash;
+			} else if ($_SESSION['HTTP_USER_AGENT'] !== $hash && $forceNewLogin === TRUE) {
+				logout();
+			}
+			
+			if(!empty($uid)){ //User is logged in
+				return TRUE;
+			}
+			
+			if ($forceNewLogin === TRUE) {
+				logout();
+			}
+			
+			return FALSE;
 		}
+		
 		
 		public static function ifset(&$v) {
 			return isset($v) ? $v : "";
@@ -23,7 +63,7 @@
 		}
 		
 		public static function is_username($v){ 
-			if(preg_match('/^[\w]{4,}$/i',$v)) return TRUE;
+			if(preg_match('/^[\w]{4,45}$/i',$v)) return TRUE;
 			return FALSE;
 		}
 		

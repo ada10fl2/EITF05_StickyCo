@@ -14,7 +14,7 @@
 	$db = new db();
 	$is_post = Validate::is_POST($_SERVER);
 	
-	Validate::noUserRedirect("login.php"); //send unauth away;
+	Validate::isLoggedIn("login.php"); //send unauth away;
 	
 	$is_valid = 
 		Validate::is_name($firstname) &&

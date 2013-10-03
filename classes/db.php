@@ -4,17 +4,19 @@ class db {
 	private $conn;
 	
 	function __construct() {
-		$user = "root";
-		$pass = "I{BawnWW.@\Nz2U#uwX+{V&`eTVVp4k0N/x`RE,8^z(5ut+'Nob2a1!C;JbFe]_";
+		$user = "webshop_FA307E42";
+		$pass = "Datx1nZEyydJGQuYtmQaCmU4dV18aOpGt6YEwPuwOGiYTyfWDsP8tlxtUh3lFq5";
 		$name = "webshop";
 		$host = "78.73.132.182";
 		$this->conn = new PDO("mysql:host=$host;dbname=$name", $user, $pass);
 		$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		
 		if(!defined("CODE_SALT")) 
 			define("CODE_SALT", "939760F3ACEE1D02785A4CE834A98E0301FE92E4E77F7C48E0A7206B");
 		if(!defined("PASSWORD_COST")) 
 			define("PASSWORD_COST", 12 * pow(1.2, idate('y') - 13) ); 
-			//Hard to tell right now but it look fessible: http://www.wolframalpha.com/input/?i=12+*+pow%281.2%2C+x+-+13%29
+			// Hard to tell right now but it look fessible: http://www.wolframalpha.com/input/?i=12+*+pow%281.2%2C+x+-+13%29, 
+			// propably we should ue the php default options instead
 	}
 	
 	function get_products(){
@@ -34,20 +36,7 @@ class db {
 	}
 	
 	function logout() {
-		if(session_status() != 2) { session_start(); }
-		
-		$_SESSION = array();
-		// If it's desired to kill the session, also delete the session cookie.
-		if (ini_get("session.use_cookies")) {
-			$params = session_get_cookie_params();
-			setcookie(session_name(), '', time() - 42000,
-				$params["path"], $params["domain"],
-				$params["secure"], $params["httponly"]
-			);
-		}
-		
-		// Finally, destroy the session.
-		session_destroy();
+		throw new Exception("Deprecated");
 	}
 	
 	function create_pass($pass){
