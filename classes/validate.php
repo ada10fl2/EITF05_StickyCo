@@ -28,7 +28,7 @@
 			}
 			
 			$uid = self::ifset($_SESSION['userid']);
-			$hash = sha1($_SERVER['HTTP_USER_AGENT'].TOKEN1.$_SERVER['REMOTE_ADDR'].TOKEN2.$uid);
+			$hash = sha1($_SERVER['HTTP_USER_AGENT'].self::TOKEN1.$_SERVER['REMOTE_ADDR'].self::TOKEN2.$uid);
 			
 			if (!isset($_SESSION['HTTP_USER_AGENT'])) {
 				$_SESSION['HTTP_USER_AGENT'] = $hash;
