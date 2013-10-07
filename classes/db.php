@@ -66,9 +66,11 @@ class db {
 				if(session_status() != 2) { 
 					session_start(); 
 				}
+				require_once('/classes/validate.php');
 				$_SESSION['user'] = $user;
 				$_SESSION['userid'] = $user_obj['UserID'];
 				$_SESSION['time'] = date('c');
+				$_SESSION['HTTP_USER_AGENT'] = Validate::session_hash($user_obj['UserID']);
 				return TRUE;
 			} else {
 				return FALSE;

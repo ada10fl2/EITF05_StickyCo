@@ -20,9 +20,7 @@
 					}
 				}
 			}
-			?>
-			<script>document.location = "index.php";</script>
-			<?php
+			exit("<script>document.location='index.php';</script>");
 		}
 	}
 	$script = "";

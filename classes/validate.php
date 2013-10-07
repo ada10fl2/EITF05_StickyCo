@@ -3,7 +3,7 @@
 		const TOKEN1 = "mAOIyz5MPpm3RGg9fNrzHH6pKfWqa6LF";
 		const TOKEN2 = "ls6FmlpeFPjuZitovdAOctGB6143JMa";
 		
-		public static function logout() {
+		public static function logout($redirect = "login.php") {
 			if(session_status() != 2) { 
 				session_start();
 			}
@@ -17,10 +17,18 @@
 				);
 			}
 			session_destroy();
-			exit("<script>document.location='login.php'; //User not logged in </script>");
+			if($redirect !== FALSE){
+				exit("<script>document.location='$redirect'; //User not logged in </script>");
+			} else {
+				// Do nothing
+			}
 		}
 		
-		public static function isLoggedIn($forceNewLogin) {
+		public static function session_hash($uid){
+			return sha1($_SERVER['HTTP_USER_AGENT'].self::TOKEN1.$_SERVER['REMOTE_ADDR'].self::TOKEN2.$uid);
+		}
+			
+		public static function is_logged_in($forceNewLogin) {
 			if(session_status() != 2) { 
 				session_start();
 			}
@@ -29,25 +37,20 @@
 				session_regenerate_id();
 				$_SESSION['server_generated'] = TRUE;
 			}
-			
 			$uid = self::ifset($_SESSION['userid']);
-			$hash = sha1($_SERVER['HTTP_USER_AGENT'].self::TOKEN1.$_SERVER['REMOTE_ADDR'].self::TOKEN2.$uid);
+			$hash = self::session_hash($uid);
 			
-			if (!isset($_SESSION['HTTP_USER_AGENT'])) {
-				$_SESSION['HTTP_USER_AGENT'] = $hash;
-			} else if ($_SESSION['HTTP_USER_AGENT'] !== $hash && $forceNewLogin === TRUE) {
-				self::logout();
+			$agent = self::ifset($_SESSION['HTTP_USER_AGENT']);
+			if($agent !== $hash){
+				self::logout($forceNewLogin === TRUE ? "login.php" : FALSE);
 			}
 			
 			if(!empty($uid)){ //User is logged in
 				return TRUE;
+			}  else {
+				self::logout($forceNewLogin === TRUE ? "login.php" : FALSE);
+				return FALSE;
 			}
-			
-			if ($forceNewLogin === TRUE) {
-				self::logout();
-			}
-			
-			return FALSE;
 		}
 		
 		

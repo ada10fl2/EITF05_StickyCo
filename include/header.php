@@ -1,6 +1,6 @@
 <?php 
 	require_once '/classes/validate.php'; 
-	Validate::isLoggedIn(isset($requireLogin) ? $requireLogin : FALSE); 	
+	Validate::is_logged_in(isset($requireLogin) ? $requireLogin : FALSE); 	
 ?>
 <!doctype html>
 <html>
