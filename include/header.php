@@ -1,11 +1,11 @@
 <?php 
 	require_once '/classes/validate.php'; 
-	Validate::isLoggedIn(isset($hijackingOverride) ? $hijackingOverride : FALSE); 	
+	Validate::isLoggedIn(isset($requireLogin) ? $requireLogin : FALSE); 	
 ?>
 <!doctype html>
 <html>
 	<head>
-		<title><?= (!isset($title) || trim($title) == false) ? "StickyCo" : $title ?></title>
+		<title><?= (!isset($title) || !empty($title)) ? "StickyCo" : $title ?></title>
 		<meta charset="utf-8">
 		<meta name="author" content="ada10fl2,ada10jbe" />
 		<meta name="description" content="StickyCo Webshop" />
@@ -20,7 +20,7 @@
 		<script src="/js/bootstrap.min.js"></script>
 		<script src="/js/bootstrap-tooltip.js"></script>
 		<?php
-			if(!(trim($scriptfile) == false)){
+			if(isset($scriptfile) && !empty($scriptfile)){
 				echo "<script src='$scriptfile'></script>";
 			}
 		?>
@@ -30,9 +30,7 @@
 				var firstFolder = parts[3];
 				$(".nav a[href='/" + firstFolder + "']").parent().attr("class", "active");
 			});
-			<?php
-				echo $script;
-			?>
+			<?= $script ?>
 		</script>
 	</head>
 
@@ -45,12 +43,15 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">StickyCo.se</a>
+				<a class="navbar-brand" href="index.php">StickyCo.se</a>
 			</div>
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li>
 						<a href="/index.php">Products</a>
+					</li>
+					<li class="visible-xs">
+						<a href="/checkout.php">Checkout your cart</a>
 					</li>
 					<li>
 						<a href="/about.php">About</a>

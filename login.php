@@ -27,21 +27,17 @@
 	}
 	$script = "";
 	$scriptfile = "/login.js";
-	$hijackingOverride = TRUE;
 	include $_SERVER["DOCUMENT_ROOT"]."/include/header.php";
 ?>
 <div class="row row-offcanvas row-offcanvas-right">
 	<div class="col-xs-12 col-sm-9">
-		<p class="pull-right visible-xs">
-			<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-		</p>
 		<div class="jumbotron">			
 			<h1>Log in</h1>
 			<form action="" method="POST" role="form" id="login">
 				
 				<div class="form-group <?= ($is_login && $success===FALSE) ? "has-error" : ""?>">
 					<label class="control-label" for="username">Username</label>
-					<input type="text" class="form-control input-lg" name="username" id="username" autofocus="true" value="<?= $user ?>">
+					<input type="text" class="form-control input-lg" name="username" id="username" autofocus="autofocus" value="<?= $user ?>">
 				</div>
 				<div class="form-group <?= ($is_login && $success===FALSE) ? "has-error" : ""?>">	
 					<label class="control-label" for="password">Password</label>

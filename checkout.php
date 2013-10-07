@@ -39,29 +39,25 @@
 		$valid = $is_valid ? "true" : "false";
 		$script = "var cart = $cart; var wasPosted = $post; var wasValid = $valid;";
 		$scriptfile = "/checkout.js";
+		$requireLogin = TRUE;
 		include $_SERVER["DOCUMENT_ROOT"]."/include/header.php";
 	}
 ?>
 <div class="row row-offcanvas row-offcanvas-right">
 	<div class="col-xs-12 col-sm-9">
-		<p class="pull-right visible-xs">
-			<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-		</p>
 		<div class="jumbotron">
 			<h1>Checkout</h1>
 			<p>
 				Please fill in your information
 			</p>
-		
 		</div>
 
 		<div class="well">	
 			<p>
 				<legend>Shopingcart <span class="badge pull-right" id="cart_size">0</span></legend>
 			</p>
-				<table  id="cart" width="100%">
-				</table>
-				<ul class="nav" id="cart_footer">
+			<table  id="cart" width="100%"></table>
+			<ul class="nav" id="cart_footer">
 				<li><h4>Sum: <span id="cart_price">0</span> SEK</h4></li>
 				<li>
 					<button type="button" class="btn btn-default btn-sm" id="cart_clear">

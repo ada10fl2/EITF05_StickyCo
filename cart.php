@@ -3,11 +3,12 @@
 	header('Content-Type: application/json');
 	$script = "";
 	
-	$pid = isset($_GET['pid'])? $_GET['pid']."" : "";
-	$action = isset($_GET['action']) ? $_GET['action'] : "";
+	require_once('/classes/validate.php');
+	$pid = Validate::ifset($_GET['pid']);
+	$action = Validate::ifset($_GET['action']);
+	
 	require_once('/classes/db.php');
 	$db = new db();
-	
 	
 	if($action === "add"){
 		if(is_numeric($pid)) {
@@ -24,9 +25,9 @@
 				$price = 0;
 				$count = 0;
 				foreach($cart['content'] as &$item) { //Already added
-					if($item['ID'] === $pid){
+					if($item['ProductID'] === $pid){
 						$found = TRUE;
-						$item['count'] = intval($item['count']) + 1;
+						$item['count'] = "".(intval($item['count']) + 1);
 						$item['prodtotal'] = intval($item['prodtotal']) + intval($item['price']);
 					}
 					$price = $price + $item['prodtotal'];
@@ -35,13 +36,15 @@
 				}
 				if($found === FALSE) { //Not added
 					$cart['content'][]= array(
-						"ID" => $pid,
+						"ProductID" => $pid,
 						"Image" => $p['Image'],
 						"price" => $p['Price'],
 						"Title" => $p['Title'],
-						"count" => 1,
+						"count" => "1",
 						"prodtotal" => $p['Price']
 					);
+					$price = $p['Price'];
+					$count = "1";
 				}
 				$cart['count'] = $count;
 				$cart['price'] = $price;
@@ -90,16 +93,20 @@
 			$count = 0;
 			$idx = 0;
 			foreach($cart['content'] as &$item) { //Already added
-				if($item['ID'] === $pid){
+				if($item['ProductID'] === $pid){
 					$found = TRUE;
 					$item['count'] = intval($item['count']) - 1;
 					$item['prodtotal'] = intval($item['prodtotal']) - intval($item['price']);
-					if($item['count'] <= 0) unset($cart['content'][$idx]);
+					if ($item['count'] <= 0) {
+						unset($cart['content'][$idx]);
+					}
 				}
 				$price = $price + $item['prodtotal'];
 				$count = $count + $item['count'];
 				$idx++;
-				if($found === TRUE) break;
+				if ($found === TRUE) {
+					break;
+				}
 			}
 			$cart['count'] = $count;
 			$cart['price'] = $price;

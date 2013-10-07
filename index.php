@@ -19,9 +19,6 @@ include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 ?>
 <div class="row row-offcanvas row-offcanvas-right">
 	<div class="col-xs-12 col-sm-9">
-		<p class="pull-right visible-xs">
-			<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-		</p>
 		<div class="jumbotron">
 			<p><img src="/img/logo.png" alt="StickyCo.se"></p>
 			<p>Checkout our awesome webshop full of amazing stickers</p>
@@ -35,7 +32,7 @@ include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 			<!--
 			<div class="col-6 col-sm-6 col-lg-4">
 			  <h2>Heading</h2>
-			  <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+			  <p>Donec id elit non mi... </p>
 			  <p><a class="btn btn-default" href="#">View details &raquo;</a></p>
 			</div>
 			-->
@@ -50,7 +47,7 @@ include $_SERVER["DOCUMENT_ROOT"] . "/include/header.php";
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 	
-	<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+	<div class="col-xs-6 col-sm-3 sidebar-offcanvas hidden-xs" id="sidebar" role="navigation">
 		<div class="well sidebar-nav">
 			<ul class="nav" id="cart_header">
 				<li>

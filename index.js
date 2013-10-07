@@ -16,10 +16,10 @@ $(document).ready(function() {
 				"<p><b>{{>Price}} SEK</b></p>" + 
 				"</div>"+
 				"<p>"+ 
-					"<button type='button' class='btn btn-default btn-sm showproduct' data-item='{{>ID}}'>View More <span class='glyphicon glyphicon-info-sign'></span> </button>"+
-					"<button type='button' class='btn btn-default btn-sm addtocart' data-item='{{>ID}}'>Add to cart <span class='glyphicon glyphicon-shopping-cart'></span></button>"+
+					"<button type='button' class='btn btn-default btn-sm showproduct' data-item='{{>ProductID}}'>View More <span class='glyphicon glyphicon-info-sign'></span> </button>"+
+					"<button type='button' class='btn btn-default btn-sm addtocart' data-item='{{>ProductID}}'>Add to cart <span class='glyphicon glyphicon-shopping-cart'></span></button>"+
 				"</p>"+
-				"<a id='product{{>ID}}'></a>"+
+				"<a id='product{{>ProductID}}'></a>"+
 			"</div>",
 		cart : 
 			"<tr><td colspan=3><b>{{>Title}}</b><td></tr>"+
@@ -27,9 +27,9 @@ $(document).ready(function() {
 					"<img src='img/small/{{>Image}}' alt='{{>Title}}' width='40' >"+
 				"{{/if}}</td>"+
 				"<td>{{>count}}st</td> <td>{{>price}} kr/st<td>  <td>{{>prodtotal}} kr</td><td>"+
-				"<button type='button' class='btn btn-primary btn-xs addtocart' data-item='{{>ID}}'><span class='glyphicon glyphicon-plus'></span></button>"+
+				"<button type='button' class='btn btn-primary btn-xs addtocart' data-item='{{>ProductID}}'><span class='glyphicon glyphicon-plus'></span></button>"+
 				"</td><td>"+
-				"<button type='button' class='btn btn-primary btn-xs removefromcart' data-item='{{>ID}}'><span class='glyphicon glyphicon-minus'></span></button>"+
+				"<button type='button' class='btn btn-primary btn-xs removefromcart' data-item='{{>ProductID}}'><span class='glyphicon glyphicon-minus'></span></button>"+
 				"</td></tr>",
 		showproduct: 
 			"<div class='modal-header'>"+
@@ -48,7 +48,7 @@ $(document).ready(function() {
 				"<p>{{>Description}}</p>" + 
 			"</div>"+
 			"<div class='modal-footer'>"+
-				"<button type='button' class='btn btn-default addtocartmodal' data-item='{{>ID}}'>Add to cart <span class='glyphicon glyphicon-shopping-cart'></span></button>"+
+				"<button type='button' class='btn btn-default addtocartmodal' data-item='{{>ProductID}}'>Add to cart <span class='glyphicon glyphicon-shopping-cart'></span></button>"+
 				"<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>"+
 			"</div>"
 	});
