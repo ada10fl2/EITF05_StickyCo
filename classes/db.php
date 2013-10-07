@@ -45,8 +45,8 @@ class db {
 		}
 		if(password_needs_rehash($user_obj['Password'], PASSWORD_COST)){ // Ensure hash is update-to-date
 			$new = $this->create_pass($trypass);
-			$stmt = $this->conn->prepare('UPDATE users SET Password=:pass WHERE ID=:userid');
-			$stmt->bindParam(":userid", $user_obj['ID']);
+			$stmt = $this->conn->prepare('UPDATE users SET Password=:pass WHERE UserID=:userid');
+			$stmt->bindParam(":userid", $user_obj['UserID']);
 			$stmt->bindParam(":pass", $new);
 			$stmt->execute();
 		}
@@ -67,7 +67,7 @@ class db {
 					session_start(); 
 				}
 				$_SESSION['user'] = $user;
-				$_SESSION['userid'] = $user_obj['ID'];
+				$_SESSION['userid'] = $user_obj['UserID'];
 				$_SESSION['time'] = date('c');
 				return TRUE;
 			} else {
