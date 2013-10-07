@@ -4,15 +4,15 @@ class db {
 	private $conn;
 	
 	function __construct() {
-		$user = ini_get("stickydb.user");
-		$pass = ini_get("stickydb.pass");
-		$name = ini_get("stickydb.name");
-		$host = ini_get("stickydb.host");
+		$user = "webshop_FA307E42";
+		$pass = "Datx1nZEyydJGQuYtmQaCmU4dV18aOpGt6YEwPuwOGiYTyfWDsP8tlxtUh3lFq5";
+		$name = "webshop";
+		$host = "78.73.132.182";
 		$this->conn = new PDO("mysql:host=$host;dbname=$name", $user, $pass);
 		$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		if(!defined("CODE_SALT")) 
-			define("CODE_SALT", ini_get('stickydb.salt'));
+			define("CODE_SALT", "939760F3ACEE1D02785A4CE834A98E0301FE92E4E77F7C48E0A7206B");
 		if(!defined("PASSWORD_COST")) 
 			define("PASSWORD_COST", 12 * pow(1.2, idate('y') - 13) ); 
 			// Hard to tell right now but it look fessible: http://www.wolframalpha.com/input/?i=12+*+pow%281.2%2C+x+-+13%29, 
