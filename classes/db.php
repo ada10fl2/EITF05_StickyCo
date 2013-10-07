@@ -191,7 +191,7 @@ class db {
 
 	function get_user($uid){
 		if(!empty($uid) && is_numeric($uid)){
-			$stmt = $this->conn->prepare('SELECT * FROM users WHERE ID=:uid');
+			$stmt = $this->conn->prepare('SELECT * FROM users WHERE UserID=:uid');
 			$stmt->bindParam(":uid", $uid);
 			$stmt->execute();
 			return $stmt->fetch(PDO::FETCH_ASSOC);
