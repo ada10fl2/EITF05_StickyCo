@@ -10,11 +10,10 @@
 	$lastname = Validate::ifset($_POST['lastname']);
 	$address = Validate::ifset($_POST['address']);
 	
-	
 	$db = new db();
 	$is_post = Validate::is_POST($_SERVER);
 	
-	Validate::isLoggedIn("login.php"); //send unauth away;
+	Validate::is_logged_in(TRUE); //send unauth away;
 	
 	$is_valid = 
 		Validate::is_name($firstname) &&
