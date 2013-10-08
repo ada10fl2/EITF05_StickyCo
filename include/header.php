@@ -43,18 +43,18 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.php">StickyCo.se</a>
+				<a class="navbar-brand" href="/">StickyCo.se</a>
 			</div>
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li>
-						<a href="/index.php">Products</a>
+						<a href="/index">Products</a>
 					</li>
 					<li class="visible-xs">
-						<a href="/checkout.php">Checkout your cart</a>
+						<a href="/checkout">Checkout your cart</a>
 					</li>
 					<li>
-						<a href="/about.php">About</a>
+						<a href="/about">About</a>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav pull-right">
@@ -67,7 +67,7 @@
 							</a>
 							</li>
 							<li>
-							<a href="/logout.php">
+							<a href="/logout">
 								<b>Logout</b>
 							</a>
 							</li>
@@ -75,7 +75,7 @@
 						} else { 
 							?>
 							<li>
-							<a href="/login.php">
+							<a href="/login">
 								<b><span class="glyphicon glyphicon-home"></span> Log in</b>
 							</a>
 							</li>

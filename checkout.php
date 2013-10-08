@@ -29,7 +29,7 @@
 		$res = $db->create_order($uid, $cart, $firstname, $lastname, $address);
 		if($res === TRUE) {
 			$db->cart_clear($uid);
-			exit("<script>document.location='success.php';</script>");
+			exit("<script>document.location='success';</script>");
 		} else {
 			exit("Creation failed, should never happen a normal user");
 		}

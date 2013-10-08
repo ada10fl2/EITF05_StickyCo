@@ -21,7 +21,7 @@
 		if($db->create_user($username, $password, $firstname, $lastname, $address)) {
 			$success = TRUE;
 			?>
-			<script>document.location = "index.php";</script>
+			<script>document.location = "/";</script>
 			<?php
 		}
 	}

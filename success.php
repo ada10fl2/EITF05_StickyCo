@@ -15,7 +15,7 @@
 			<h1>Success!</h1>
 			<img src="/img/green-tick.png" class="greentick">
 			<p>
-				<a href="index.php">
+				<a href="/">
 					<button type="button" class="btn btn-default btn-lg">Return To Products</button>
 				</a>
 				Your purchase was successful!

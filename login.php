@@ -20,7 +20,7 @@
 					}
 				}
 			}
-			exit("<script>document.location='index.php';</script>");
+			exit("<script>document.location='/';</script>");
 		}
 	}
 	$script = "";
@@ -46,7 +46,7 @@
 				</div>
 				<button class="btn btn-default btn-lg" type="submit">Log in</button>
 				<br/><br/>
-				Not registered yet? <a href="signup.php">Sign up here</a>
+				Not registered yet? <a href="signup">Sign up here</a>
 			</form>
 		
 		</div>

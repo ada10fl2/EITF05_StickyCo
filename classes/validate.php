@@ -3,7 +3,7 @@
 		const TOKEN1 = "mAOIyz5MPpm3RGg9fNrzHH6pKfWqa6LF";
 		const TOKEN2 = "ls6FmlpeFPjuZitovdAOctGB6143JMa";
 		
-		public static function logout($redirect = "login.php") {
+		public static function logout($redirect = "login") {
 			if(session_status() != 2) { 
 				session_start();
 			}
@@ -42,13 +42,13 @@
 			
 			$agent = self::ifset($_SESSION['HTTP_USER_AGENT']);
 			if($agent !== $hash){
-				self::logout($forceNewLogin === TRUE ? "login.php" : FALSE);
+				self::logout($forceNewLogin === TRUE ? "login" : FALSE);
 			}
 			
 			if(!empty($uid)){ //User is logged in
 				return TRUE;
 			}  else {
-				self::logout($forceNewLogin === TRUE ? "login.php" : FALSE);
+				self::logout($forceNewLogin === TRUE ? "login" : FALSE);
 				return FALSE;
 			}
 		}

@@ -81,7 +81,7 @@ $(document).ready(function() {
 		clearCart();
 	});
 	$("#checkout").bind("click", function(){
-		document.location = "/checkout.php";
+		document.location = "/checkout";
 	});
 });
 
@@ -107,7 +107,7 @@ function updateCart(){
 	});
 }
 function clearCart(){
-	$.getJSON( "/cart.php?action=clear" , {})
+	$.getJSON( "/cart?action=clear" , {})
 	.done(function(data){
 		if(data === false){
 			console.log("Failed to clear cart");
@@ -120,7 +120,7 @@ function clearCart(){
 }
 
 function removefromcart(id){
-	$.getJSON( "/cart.php?action=remove&pid="+id , {})
+	$.getJSON( "/cart?action=remove&pid="+id , {})
 	.done(function(data){
 		if(data === false){
 			console.log("Failed to remove from cart cart");
@@ -133,7 +133,7 @@ function removefromcart(id){
 }
 
 function addToCart(id){
-	$.getJSON( "/cart.php?action=add&pid="+id , {})
+	$.getJSON( "/cart?action=add&pid="+id , {})
 	.done(function(data){
 		if(data === false){
 			console.log("Failed to add to cart");

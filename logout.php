@@ -2,5 +2,5 @@
 	Validate::logout();
 ?>
 <script>
-	document.location = "index.php";
+	document.location = "/";
 </script>
