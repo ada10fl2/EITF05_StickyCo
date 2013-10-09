@@ -4,10 +4,11 @@ class db {
 	private $conn;
 	
 	function __construct() {
-		$user = "webshop_FA307E42";
-		$pass = "Datx1nZEyydJGQuYtmQaCmU4dV18aOpGt6YEwPuwOGiYTyfWDsP8tlxtUh3lFq5";
-		$name = "webshop";
-		$host = "78.73.132.182";
+		$inifile = parse_ini_file('C:\xampp\php\database.ini');
+		$user = $inifile['user'];
+		$pass = $inifile['password'];;
+		$name = $inifile['db'];;
+		$host = $inifile['host'];;
 		$this->conn = new PDO("mysql:host=$host;dbname=$name", $user, $pass);
 		$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
