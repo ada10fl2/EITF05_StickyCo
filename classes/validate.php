@@ -37,18 +37,24 @@
 				session_regenerate_id();
 				$_SESSION['server_generated'] = TRUE;
 			}
+			
+			
 			$uid = self::ifset($_SESSION['userid']);
 			$hash = self::session_hash($uid);
 			
-			$agent = self::ifset($_SESSION['HTTP_USER_AGENT']);
-			if($agent !== $hash){
-				self::logout($forceNewLogin === TRUE ? "login" : FALSE);
+			if(!isset($_SESSION['HTTP_USER_AGENT'])){
+				$_SESSION['HTTP_USER_AGENT'] = $hash;
 			}
 			
+			$agent = self::ifset($_SESSION['HTTP_USER_AGENT']);
+			
+			if($agent !== $hash) { // Session hijacked!
+				self::logout($forceNewLogin === TRUE ? "login" : FALSE);
+			}			
+
 			if(!empty($uid)){ //User is logged in
 				return TRUE;
 			}  else {
-				self::logout($forceNewLogin === TRUE ? "login" : FALSE);
 				return FALSE;
 			}
 		}

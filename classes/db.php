@@ -131,7 +131,7 @@ class db {
 
 	function cart_get($userid){
 		if(!empty($userid) && is_numeric($userid)){
-			$stmt = $this->conn->prepare('SELECT cart.ProductID as ID, products.Image as Image, products.price as price, count(*) as count, '.
+			$stmt = $this->conn->prepare('SELECT cart.ProductID as ProductID, products.Image as Image, products.price as price, count(*) as count, '.
 										 'products.Title from cart INNER JOIN products ON cart.ProductID=products.ProductID WHERE cart.UserID=:uid GROUP BY cart.ProductID');
 			$stmt->bindParam(":uid", $userid);
 			$stmt->execute();
