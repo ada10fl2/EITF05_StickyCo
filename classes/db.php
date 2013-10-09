@@ -4,6 +4,7 @@ class db {
 	private $conn;
 	
 	function __construct() {
+		//This file should be readable only by root/apache
 		$inifile = parse_ini_file('C:\xampp\php\database.ini');
 		$user = $inifile['user'];
 		$pass = $inifile['password'];;
