@@ -7,9 +7,9 @@ class db {
 		//This file should be readable only by root/apache
 		$inifile = parse_ini_file('C:\xampp\php\database.ini');
 		$user = $inifile['user'];
-		$pass = $inifile['password'];;
-		$name = $inifile['db'];;
-		$host = $inifile['host'];;
+		$pass = $inifile['password'];
+		$name = $inifile['db'];
+		$host = $inifile['host'];
 		$this->conn = new PDO("mysql:host=$host;dbname=$name", $user, $pass);
 		$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
