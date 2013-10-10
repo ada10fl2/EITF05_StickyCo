@@ -40,17 +40,29 @@
 			
 			
 			$uid = self::ifset($_SESSION['userid']);
-			$hash = self::session_hash($uid);
 			
+			$hash = self::session_hash($uid);
 			if(!isset($_SESSION['HTTP_USER_AGENT'])){
 				$_SESSION['HTTP_USER_AGENT'] = $hash;
 			}
 			
-			$agent = self::ifset($_SESSION['HTTP_USER_AGENT']);
 			
+			$agent = self::ifset($_SESSION['HTTP_USER_AGENT']);
 			if($agent !== $hash) { // Session hijacked!
 				self::logout($forceNewLogin === TRUE ? "/login" : FALSE);
-			}			
+			}
+			
+			$epoch  = idate('U');
+			if(!isset($_SESSION['HTTP_USER_TIME'])){
+				$_SESSION['HTTP_USER_TIME'] = $epoch;
+			}
+			
+			$usertime = self::ifset($_SESSION['HTTP_USER_TIME']);
+			if($usertime < $epoch - 3000){ // user timeout
+				self::logout($forceNewLogin === TRUE ? "/login" : FALSE);
+			} else { //keep activity updated
+				$_SESSION['HTTP_USER_TIME'] = $epoch; 
+			}
 
 			if(!empty($uid)){ //User is logged in
 				return TRUE;
