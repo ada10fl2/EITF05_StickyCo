@@ -49,14 +49,15 @@
 			$agent = self::ifset($_SESSION['HTTP_USER_AGENT']);
 			
 			if($agent !== $hash) { // Session hijacked!
-				self::logout($forceNewLogin === TRUE ? "login" : FALSE);
+				self::logout($forceNewLogin === TRUE ? "/login" : FALSE);
 			}			
 
 			if(!empty($uid)){ //User is logged in
 				return TRUE;
-			}  else {
-				return FALSE;
+			}  else if($forceNewLogin === TRUE) { // UnAuth access to this page
+				exit("<script>document.location='/login'; //User not logged in </script>");
 			}
+			return FALSE;
 		}
 		
 		
