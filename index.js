@@ -66,13 +66,14 @@ $(document).ready(function() {
 	$(".showproduct").bind("click", function(){
 		var id = $(this).attr("data-item");
 		for(var i=0; i<products.length; i++){
-			if(products[i].ID === id){
+			if(products[i].ProductID === id){
 				$('#myModal').find(".modal-content:first").html($.render.showproduct(products[i]));
 				$('#myModal').modal();
 				$(".addtocartmodal").bind("click", function(event){
 					var id = $(this).attr("data-item");
 					addToCart(id);
 				});
+				break;
 			}
 		}
 	});
