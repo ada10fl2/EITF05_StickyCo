@@ -1,12 +1,17 @@
 #EITF05 - Web Security - Project
 A webshop was implemented, using PHP and MySql
+<img src='https://github.com/ada10fl2/EITF05_ProjectWebshop/raw/master/screen.png'>
 
 ## Assignment
 http://www.eit.lth.se/fileadmin/eit/courses/eitf05/project/webshop.pdf
 
-## Configuration 
+## Final Report
+https://github.com/ada10fl2/EITF05_ProjectWebshop/raw/master/report.pdf
 
-### Configure PHP
+## Configuration 
+See further details in the report above
+
+### PHP
 Run `nano /etc/php.ini`
 ```	
 # Set session store to be outside of the www-root
@@ -16,7 +21,7 @@ session.save_path="/var/lib/php/session"
 upload_tmp_dir="/var/lib/php/session"
 ```	
 
-###Configure Apache
+### Apache
 Run `nano /etc/php.d/secutity.ini`
 ```
 # Dont leak information
@@ -55,7 +60,7 @@ open_basedir = directory[:...]
 safe_mode_exec_dir = directory[:...]
 ```
 
-## Configure `www-root`, in deployed system only
+## `www-root`, in deployed system only
 ```	
 # Make sure path is outside /var/www/html and not readable or writeable by any other system users:
 run:
