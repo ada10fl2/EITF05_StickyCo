@@ -60,7 +60,7 @@ open_basedir = directory[:...]
 safe_mode_exec_dir = directory[:...]
 ```
 
-## `www-root`, in deployed system only
+## `www-root` (production only)
 ```	
 # Make sure path is outside /var/www/html and not readable or writeable by any other system users:
 run:
