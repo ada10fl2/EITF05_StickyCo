@@ -1,6 +1,7 @@
 #EITF05 - Web Security - Project
-A webshop was implemented, using PHP and MySql
-<img src='https://github.com/ada10fl2/EITF05_ProjectWebshop/raw/master/screen.png'>
+A webshop was implemented using PHP 5.4, Bootstrap 3 and MySql
+
+<img src='https://github.com/ada10fl2/EITF05_ProjectWebshop/raw/master/screen.png' width='400px' >
 
 ## Assignment
 http://www.eit.lth.se/fileadmin/eit/courses/eitf05/project/webshop.pdf
